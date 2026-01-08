@@ -3,7 +3,7 @@
 
 /**
  * @fileOverview This file defines a Genkit flow for transforming a user's image
- * into a satirical, persona-based caricature.
+ * into a satirical, persona-based caricature. It includes a content moderation check.
  *
  * - satirizeImage - The main function to trigger the image satirization.
  * - SatirizeImageInput - The input type for the satirizeImage function.
@@ -38,23 +38,36 @@ const satirizeImageFlow = ai.defineFlow(
     outputSchema: SatirizeImageOutputSchema,
   },
   async (input) => {
-    const { media } = await ai.generate({
-      model: 'googleai/gemini-2.5-flash-image-preview',
-      prompt: [
-        { media: { url: input.imageUrl } },
-        { text: `Redraw this person in a satirical comic book style that captures the essence of a '${input.personaName}'. 
-        This persona is described as: "${input.personaDescription}". 
-        Emphasize the satirical and humorous aspects of this professional archetype. The background should be simple and not distract from the character.` },
-      ],
-      config: {
-        responseModalities: ['TEXT', 'IMAGE'],
-      },
-    });
+    try {
+      const { media } = await ai.generate({
+        model: 'googleai/gemini-2.5-flash-image-preview',
+        prompt: [
+          { media: { url: input.imageUrl } },
+          { text: `Redraw this person in a satirical comic book style that captures the essence of a '${input.personaName}'. 
+          This persona is described as: "${input.personaDescription}". 
+          Emphasize the satirical and humorous aspects of this professional archetype. The background should be simple and not distract from the character.` },
+        ],
+        config: {
+          responseModalities: ['TEXT', 'IMAGE'],
+          safetySettings: [
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_LOW_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_LOW_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_LOW_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_LOW_AND_ABOVE' },
+          ],
+        },
+      });
 
-    if (!media || !media.url) {
-        throw new Error('Image generation failed to return a valid image.');
+      if (!media || !media.url) {
+          throw new Error('Image generation failed to return a valid image.');
+      }
+      
+      return { satirizedImageUrl: media.url };
+
+    } catch (error: any) {
+        console.warn('AI image satirization failed, potentially due to safety filters.', error);
+        // Throw a new, user-facing error with a sarcastic message.
+        throw new Error("Our AI judges your submission to be... let's say, 'not in the spirit of professional satire.' Please try a different image that doesn't make our servers blush.");
     }
-    
-    return { satirizedImageUrl: media.url };
   }
 );

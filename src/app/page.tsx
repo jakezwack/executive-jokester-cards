@@ -135,12 +135,12 @@ export default function Home() {
       } else {
         throw new Error('Failed to satirize image. The result was empty.');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error satirizing image:', error);
       toast({
         variant: 'destructive',
         title: 'Image Generation Failed',
-        description: 'Could not generate the satirical image. Please try again.',
+        description: error.message || 'Could not generate the satirical image. Please try again.',
       });
     } finally {
       setIsSatirizing(false);
