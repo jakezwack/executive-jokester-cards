@@ -73,9 +73,11 @@ export default function CardPage() {
       <div className="flex flex-col items-center gap-8">
         <SharingCard {...cardData} />
         <div className="flex gap-4">
-            <Button size="lg" className="bg-primary/80 hover:bg-primary animate-pulse">
-                <Sparkles className="mr-2"/>
-                EVOLVE TO UNLOCK HOLOGRAM
+            <Button asChild size="lg" className="bg-primary/80 hover:bg-primary animate-pulse">
+                <Link href="/">
+                    <Sparkles className="mr-2"/>
+                    EVOLVE TO UNLOCK HOLOGRAM
+                </Link>
             </Button>
             <Button variant="secondary" size="lg" onClick={() => router.push('/')}>
                 <Bomb className="mr-2"/>
@@ -86,5 +88,3 @@ export default function CardPage() {
     </main>
   );
 }
-
-    
