@@ -73,6 +73,7 @@ export default {
       },
       backgroundImage: {
         'grid-pattern': 'linear-gradient(hsl(var(--border)) 1px, transparent 1px), linear-gradient(to right, hsl(var(--border)) 1px, hsl(var(--background)) 1px)',
+        'ej-logo-pattern': "url('https://storage.googleapis.com/stabl-media/the-executive-jokester/executive-jokester-logo-pattern.svg')",
       },
       keyframes: {
         'accordion-down': {

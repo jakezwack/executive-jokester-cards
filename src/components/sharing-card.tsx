@@ -3,11 +3,14 @@ import Image from 'next/image';
 import { CardData } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import { Target, Sparkles } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const SharingCard = forwardRef<HTMLDivElement, CardData>((
   { name, persona, imageUrl, theme, satiricalWit, isEvolved, customQuote },
   ref
 ) => {
+
+  const ejLogo = PlaceHolderImages.find(img => img.id === 'ej-logo')?.imageUrl || '';
 
   const CardBase = ({ children, className }: { children: React.ReactNode, className?: string }) => (
     <div
@@ -42,7 +45,14 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
                 <p className="text-sm text-gray-500 font-semibold">&ldquo;{customQuote}&rdquo;</p>
               </div>
             )}
-             <p className="absolute bottom-4 text-xs text-gray-400 font-mono">1% Listing fee, when you buy with me</p>
+             <div className="absolute bottom-4 text-center w-full">
+                {ejLogo && (
+                    <Image src={ejLogo} alt="Logo" width={40} height={40} className="mx-auto filter grayscale brightness-0 invert opacity-20" data-ai-hint="logo circular" />
+                )}
+                <p className="text-xs text-gray-400 font-mono mt-1">
+                    theexecutivejokester.com | ID: {persona.id.toUpperCase()}
+                </p>
+             </div>
           </div>
         </CardBase>
       );
@@ -75,6 +85,9 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
               <Sparkles className="w-6 h-6"/>
               <span className="font-bold">EVOLVED</span>
             </div>
+            {ejLogo && (
+                <Image src={ejLogo} alt="The Executive Jokester" width={50} height={50} className="absolute bottom-12 right-4 mix-blend-overlay filter hue-rotate-[280deg] saturate-200 opacity-70" data-ai-hint="logo circular" />
+            )}
             <div className="flex-1 flex flex-col items-center justify-center gap-4">
                <div className="relative w-32 h-32">
                 <Image
@@ -98,7 +111,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
               )}
             </div>
             <div className="text-center text-xs text-muted-foreground font-mono">
-              1% Listing fee, when you buy with me
+              theexecutivejokester.com // {persona.id.toUpperCase()}
             </div>
         </div>
       </CardBase>
@@ -107,7 +120,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
 
   return (
     <CardBase className="bg-card border-2 border-primary/50 p-1">
-      <div className="w-full h-full border border-primary/30 bg-grid-pattern [background-size:2rem_2rem] p-6 flex flex-col justify-between relative">
+      <div className="w-full h-full border border-primary/30 bg-grid-pattern bg-ej-logo-pattern [background-size:2rem_2rem,auto] p-6 flex flex-col justify-between relative">
         <div className="flex justify-between items-start text-primary">
           <div className="flex items-center gap-2">
             <Target className="w-6 h-6"/>
@@ -115,7 +128,9 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
           </div>
           <div className="text-xs font-mono">ID: {(name || '').replace(/ /g,'').toUpperCase()}-2024</div>
         </div>
-
+         {ejLogo && (
+            <Image src={ejLogo} alt="The Executive Jokester" width={50} height={50} className="absolute bottom-12 right-4 opacity-40 mix-blend-overlay" data-ai-hint="logo circular" />
+        )}
         <div className="flex-1 flex flex-col items-center justify-center text-center gap-4">
           <div className="relative w-32 h-32">
             <Image
@@ -131,12 +146,13 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
           <div>
             <h2 className="text-2xl font-bold text-foreground">{name}</h2>
             <p className="text-primary font-medium">{persona.name}</p>
+
           </div>
           <p className="text-sm text-muted-foreground max-w-xs italic">&ldquo;{satiricalWit}&rdquo;</p>
         </div>
 
         <div className="text-center text-xs text-muted-foreground font-mono">
-          theexecutivejokester.com // S-CLASS ASSET
+          theexecutivejokester.com // {persona.id.toUpperCase()}
         </div>
       </div>
     </CardBase>
