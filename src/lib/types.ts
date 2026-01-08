@@ -4,6 +4,8 @@ export interface Persona {
   id: string;
   name: string;
   description: string;
+  evolvedName: string;
+  evolvedDescription: string;
 }
 
 export interface CardData {

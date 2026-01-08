@@ -3,27 +3,37 @@
     {
       "id": "agent-orchestrator",
       "name": "Agent Orchestrator",
-      "description": "Spends all day correcting the 'intelligent' mistakes of autonomous systems."
+      "description": "Spends all day correcting the 'intelligent' mistakes of autonomous systems.",
+      "evolvedName": "The Conductor of Chaos",
+      "evolvedDescription": "You don't just manage bots; you compose symphonies from the discord of automation. You find the human note in the digital noise."
     },
     {
       "id": "coffee-badger",
       "name": "Coffee Badger",
-      "description": "Masters the art of being visible for the free snacks and invisible for the actual work."
+      "description": "Masters the art of being visible for the free snacks and invisible for the actual work.",
+      "evolvedName": "The Ambassador of Serendipity",
+      "evolvedDescription": "Your presence isn't about avoiding work; it's about creating the random collisions that spark breakthrough ideas. You are the human algorithm for innovation."
     },
     {
       "id": "resenteeism-rogue",
       "name": "Resenteeism Rogue",
-      "description": "Mentally quit months ago, but the paycheck has a magnetic personality."
+      "description": "Mentally quit months ago, but the paycheck has a magnetic personality.",
+      "evolvedName": "The Stoic Survivor",
+      "evolvedDescription": "You endure the corporate storms with a quiet strength. Your resilience is a testament to the human spirit's ability to find purpose even in the absurd."
     },
     {
       "id": "pyromancer-of-files",
       "name": "Pyromancer of Files",
-      "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from legal."
+      "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from legal.",
+      "evolvedName": "The Archivist of Zen",
+      "evolvedDescription": "You don't just shred paper; you curate mental space. You are the fire that clears the brush so new ideas can grow."
     },
     {
       "id": "human-legacy-asset",
       "name": "Human Legacy Asset",
-      "description": "Basically a vintage classic. Too expensive to maintain, too iconic to replace."
+      "description": "Basically a vintage classic. Too expensive to maintain, too iconic to replace.",
+      "evolvedName": "The Keeper of Institutional Wisdom",
+      "evolvedDescription": "You are not outdated; you are the foundation. You carry the stories, the lessons, and the soul of the company that no database can ever hold."
     }
   ]
 }
