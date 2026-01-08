@@ -15,4 +15,6 @@ export interface CardData {
   theme: CardTheme;
   satiricalWit: string;
   bio?: string;
+  isEvolved: boolean;
+  customQuote?: string;
 }

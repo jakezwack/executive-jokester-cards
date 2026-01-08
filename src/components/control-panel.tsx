@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { Upload, WandSparkles, Save, Download, Camera, Loader2 } from 'lucide-react';
+import { Upload, WandSparkles, Save, Download, Camera, Loader2, Sparkles } from 'lucide-react';
 import ThemeSwitcher from './theme-switcher';
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -35,6 +35,7 @@ const formSchema = z.object({
   personaId: z.string(),
   imageUrl: z.string().url('Please enter a valid URL'),
   bio: z.string().max(200, 'Bio is too long').optional(),
+  customQuote: z.string().max(140, 'Quote is too long').optional(),
 });
 
 export default function ControlPanel({
@@ -56,6 +57,7 @@ export default function ControlPanel({
       personaId: cardData.persona.id,
       imageUrl: cardData.imageUrl,
       bio: cardData.bio || '',
+      customQuote: cardData.customQuote || '',
     },
     mode: 'onBlur',
   });
@@ -80,6 +82,10 @@ export default function ControlPanel({
     }
   };
 
+  const toggleEvolve = () => {
+    onDataChange({ isEvolved: !cardData.isEvolved });
+  };
+
   return (
     <div className="w-full md:w-[380px] md:min-w-[380px] bg-card md:border-r border-border flex flex-col">
       <div className="p-4 border-b border-border">
@@ -89,7 +95,7 @@ export default function ControlPanel({
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         <Form {...form}>
-          <form onBlur={form.handleSubmit((data) => onDataChange({ name: data.name }))} className="space-y-6">
+          <form onBlur={form.handleSubmit((data) => onDataChange({ name: data.name, customQuote: data.customQuote, bio: data.bio }))} className="space-y-6">
             <div className="space-y-4">
               <h3 className="font-medium">Profile Details</h3>
               <FormField
@@ -124,7 +130,10 @@ export default function ControlPanel({
                       </SelectContent>
                     </Select>
                     <FormDescription>
-                      {personas.find(p => p.id === field.value)?.description}
+                      {cardData.isEvolved
+                        ? personas.find(p => p.id === field.value)?.evolvedDescription
+                        : personas.find(p => p.id === field.value)?.description
+                      }
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -164,11 +173,39 @@ export default function ControlPanel({
                     <FormControl>
                       <Textarea placeholder="Give the AI a taste of your comedy..." {...field} />
                     </FormControl>
+                     <FormDescription>
+                      This helps the AI match your personal style of humor.
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+
+            {cardData.isEvolved && (
+              <>
+                <Separator />
+                <div className="space-y-4">
+                  <h3 className="font-medium text-primary">Inspirational Coin</h3>
+                  <FormField
+                    control={form.control}
+                    name="customQuote"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Your Quote</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Stamp your wisdom onto the card..." {...field} />
+                        </FormControl>
+                        <FormDescription>
+                          This quote will be displayed on your evolved card.
+                        </FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </>
+            )}
 
             <Separator />
 
@@ -184,10 +221,16 @@ export default function ControlPanel({
 
             <div>
               <h3 className="font-medium mb-2">Tools</h3>
-              <Button onClick={onGenerateWit} disabled={isGenerating} className="w-full">
-                {isGenerating ? <Loader2 className="animate-spin" /> : <WandSparkles />}
-                Generate Satirical Wit
-              </Button>
+              <div className="grid grid-cols-2 gap-2">
+                <Button onClick={toggleEvolve} variant="secondary">
+                  <Sparkles />
+                  {cardData.isEvolved ? 'Devolve' : 'Evolve'}
+                </Button>
+                <Button onClick={onGenerateWit} disabled={isGenerating}>
+                  {isGenerating ? <Loader2 className="animate-spin" /> : <WandSparkles />}
+                  Generate Wit
+                </Button>
+              </div>
             </div>
           </form>
         </Form>

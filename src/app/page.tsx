@@ -27,6 +27,8 @@ export default function Home() {
     theme: 'Tactical',
     satiricalWit: 'I put the "pro" in "procrastination".',
     bio: '',
+    isEvolved: false,
+    customQuote: '',
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
