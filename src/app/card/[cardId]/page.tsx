@@ -2,7 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { doc } from 'firebase/firestore';
 import { useFirestore, useMemoFirebase, useDoc } from '@/firebase';
@@ -10,7 +10,8 @@ import SharingCard from '@/components/sharing-card';
 import { Button } from '@/components/ui/button';
 import { SavedCardData, CardData, Persona } from '@/lib/types';
 import { personas } from '@/lib/personas';
-import { Loader2, ArrowLeft, Bomb, Sparkles, Gem } from 'lucide-react';
+import { ArrowLeft, Bomb, Sparkles, Gem } from 'lucide-react';
+import CardLoader from '@/components/card-loader';
 
 export default function CardPage() {
   const { cardId } = useParams();
@@ -45,10 +46,7 @@ export default function CardPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-        <div className="flex flex-col items-center justify-center gap-4">
-            <Loader2 className="w-16 h-16 animate-spin text-primary" />
-            <p className="text-lg text-muted-foreground">Summoning Holographic Soul...</p>
-        </div>
+        <CardLoader />
       </div>
     );
   }
@@ -56,7 +54,7 @@ export default function CardPage() {
   if (error || !cardData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-        <div className="text-center">
+        <div className="text-center p-4">
             <h1 className="text-3xl font-bold text-destructive">Card Not Found</h1>
             <p className="mt-2 text-muted-foreground">This sharing card may have been deleted or the link is incorrect.</p>
             <Button asChild variant="outline" className="mt-6">
