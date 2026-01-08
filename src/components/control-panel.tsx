@@ -12,11 +12,12 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { Upload, WandSparkles, Save, Download, Camera, Loader2, Sparkles, View } from 'lucide-react';
+import { Upload, WandSparkles, Save, Share2, Camera, Loader2, Sparkles, View } from 'lucide-react';
 import ThemeSwitcher from './theme-switcher';
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { personas } from '@/lib/personas';
+import { useToast } from '@/hooks/use-toast';
 
 
 type ControlPanelProps = {
@@ -53,6 +54,7 @@ export default function ControlPanel({
   lastSavedCardId,
 }: ControlPanelProps) {
   
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -88,6 +90,41 @@ export default function ControlPanel({
   const toggleEvolve = () => {
     onDataChange({ isEvolved: !cardData.isEvolved });
   };
+
+  const handleShare = async () => {
+    if (!lastSavedCardId) {
+      toast({
+        variant: 'destructive',
+        title: 'Save First!',
+        description: 'You must save the card before you can share it.',
+      });
+      return;
+    }
+
+    const shareUrl = `${window.location.origin}/card/${lastSavedCardId}`;
+    const shareData = {
+      title: 'The Executive Jokester',
+      text: `Check out my new professional persona: ${cardData.persona.name}`,
+      url: shareUrl,
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      // Fallback for browsers that don't support Web Share API
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        toast({
+          title: 'Link Copied!',
+          description: 'The share link has been copied to your clipboard.',
+        });
+      });
+    }
+  };
+
 
   return (
     <div className="w-full md:w-[380px] md:min-w-[380px] bg-card md:border-r border-border flex flex-col">
@@ -256,9 +293,9 @@ export default function ControlPanel({
             {isSaving ? <Loader2 className="animate-spin" /> : <Save />}
             Save
           </Button>
-          <Button variant="outline" onClick={onExport}>
-            <Download />
-            Export
+          <Button variant="outline" onClick={handleShare} disabled={!lastSavedCardId}>
+            <Share2 />
+            Share
           </Button>
         </div>
         {lastSavedCardId && (
