@@ -1,109 +1,75 @@
 
-'use client';
+import { initializeApp, getApps, App } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import { Metadata } from 'next';
+import CardClientPage from './card-client-page';
+import { SavedCardData } from '@/lib/types';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { doc } from 'firebase/firestore';
-import { useFirestore, useMemoFirebase, useDoc } from '@/firebase';
-import SharingCard from '@/components/sharing-card';
-import { Button } from '@/components/ui/button';
-import { SavedCardData, CardData, Persona } from '@/lib/types';
-import { personas } from '@/lib/personas';
-import { ArrowLeft, Bomb, Sparkles, Gem } from 'lucide-react';
-import CardLoader from '@/components/card-loader';
-import { incrementViewCount } from '@/lib/actions';
+// Initialize Firebase Admin SDK
+let adminApp: App;
+if (!getApps().length) {
+  adminApp = initializeApp();
+} else {
+  adminApp = getApps()[0];
+}
 
-export default function CardPage() {
-  const { cardId } = useParams();
-  const firestore = useFirestore();
-  const router = useRouter();
+const db = getFirestore(adminApp);
 
-  const docRef = useMemoFirebase(() => {
-    if (!firestore || typeof cardId !== 'string') return null;
-    return doc(firestore, 'sharing_cards', cardId);
-  }, [firestore, cardId]);
+type Props = {
+  params: { cardId: string }
+}
 
-  const { data: savedCardData, isLoading, error } = useDoc<SavedCardData>(docRef);
-  
-  const [cardData, setCardData] = useState<CardData | null>(null);
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cardId = params.cardId;
 
-  useEffect(() => {
-    if (savedCardData) {
-      const persona = personas.find(p => p.id === savedCardData.personaId) || personas[0];
-      setCardData({
-        name: savedCardData.name,
-        persona: persona,
-        imageUrl: savedCardData.imageUrl,
-        theme: savedCardData.theme,
-        satiricalWit: savedCardData.satiricalWit,
-        bio: savedCardData.bio,
-        isEvolved: savedCardData.isEvolved,
-        customQuote: savedCardData.customQuote,
-      });
+  try {
+    const cardRef = db.collection('sharing_cards').doc(cardId);
+    const doc = await cardRef.get();
+
+    if (!doc.exists) {
+      return {
+        title: 'Card Not Found',
+        description: 'This sharing card may have been deleted or the link is incorrect.',
+      };
     }
-  }, [savedCardData]);
 
-  useEffect(() => {
-    if (cardId && typeof cardId === 'string') {
-      incrementViewCount(cardId);
-    }
-  }, [cardId]);
+    const cardData = doc.data() as SavedCardData;
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-        <CardLoader />
-      </div>
-    );
+    const title = `${cardData.name} - ${cardData.personaName}`;
+    const description = `"${cardData.satiricalWit}" | The Executive Jokester`;
+
+    return {
+      title: title,
+      description: description,
+      openGraph: {
+        title: title,
+        description: description,
+        images: [
+          {
+            url: cardData.imageUrl,
+            width: 400,
+            height: 400,
+            alt: cardData.name,
+          },
+        ],
+        siteName: 'The Executive Jokester',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: title,
+        description: description,
+        images: [cardData.imageUrl],
+      },
+    };
+  } catch (error) {
+    console.error('Error generating metadata:', error);
+    return {
+      title: 'The Executive Jokester',
+      description: 'Professional satire for the 2026 agentic workplace.',
+    };
   }
+}
 
-  if (error || !cardData) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-        <div className="text-center p-4">
-            <h1 className="text-3xl font-bold text-destructive">Card Not Found</h1>
-            <p className="mt-2 text-muted-foreground">This sharing card may have been deleted or the link is incorrect.</p>
-            <Button asChild variant="outline" className="mt-6">
-              <Link href="/"><ArrowLeft className="mr-2"/> Back to Generator</Link>
-            </Button>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <main className="min-h-screen bg-background text-foreground font-body flex flex-col items-center justify-center p-4">
-      <div className="absolute top-4 left-4">
-         <Button asChild variant="outline">
-          <Link href="/"><ArrowLeft className="mr-2"/> Back to Generator</Link>
-        </Button>
-      </div>
-      <div className="flex flex-col items-center gap-8">
-        <SharingCard {...cardData} />
-        <div className="flex flex-col gap-4 w-full max-w-sm">
-          <Button asChild size="lg" className="w-full bg-primary/90 hover:bg-primary text-primary-foreground animate-pulse">
-            <Link href="/">
-              <Sparkles className="mr-2"/>
-              EVOLVE THIS SOUL
-            </Link>
-          </Button>
-          <div className="grid grid-cols-2 gap-4">
-            <Button asChild variant="secondary" size="lg" className="w-full">
-              <Link href={`/?counter=${cardData.persona.id}`}>
-                <Bomb className="mr-2"/>
-                Retaliate
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="w-full">
-               <Link href="/">
-                <Gem className="mr-2"/>
-                Coin Your Own
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </main>
-  );
+export default function CardPage({ params }: Props) {
+  return <CardClientPage cardId={params.cardId} />;
 }
