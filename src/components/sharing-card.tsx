@@ -29,7 +29,8 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
        return (
         <CardBase className="bg-white text-black font-headline border-4 border-amber-300">
           <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-8 bg-slate-50">
-            <Sparkles className="w-12 h-12 text-amber-400 absolute top-8 right-8" />
+             <div className="absolute inset-0 holographic-effect opacity-50"></div>
+            <Sparkles className="w-12 h-12 text-amber-400 absolute top-8 right-8 animate-pulse" />
             <div className="relative w-32 h-32 mb-4">
               <Image src={imageUrl} alt={name} width={128} height={128} className="rounded-full border-4 border-amber-300 object-cover" data-ai-hint="headshot" />
             </div>
@@ -67,8 +68,9 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
   // Tactical Theme (default)
   if (isEvolved) {
     return (
-      <CardBase className="bg-card border-2 border-primary/50 p-1">
+      <CardBase className="bg-card border-2 border-primary/50 p-1 animate-pulse-slow">
         <div className="w-full h-full border border-primary/30 bg-background p-6 flex flex-col justify-between relative text-center">
+            <div className="absolute inset-0 holographic-effect opacity-50"></div>
             <div className="absolute top-4 left-4 flex items-center gap-2 text-primary/70">
               <Sparkles className="w-6 h-6"/>
               <span className="font-bold">EVOLVED</span>

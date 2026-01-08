@@ -40,3 +40,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  @keyframes holographic {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  .holographic-effect {
+    background: linear-gradient(
+      -45deg,
+      rgba(255, 0, 255, 0.2),
+      rgba(0, 255, 255, 0.2),
+      rgba(255, 255, 0, 0.2),
+      rgba(0, 255, 0, 0.2)
+    );
+    background-size: 400% 400%;
+    animation: holographic 8s ease infinite;
+  }
+}
