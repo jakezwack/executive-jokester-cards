@@ -146,7 +146,7 @@ export default function CardClientPage({ cardId, initialCardData }: { cardId: st
             </Link>
           </Button>
            {getSubmissionStatusUI()}
-           <MarketplaceLinks cardId={cardId} />
+           <MarketplaceLinks cardId={cardId} persona={cardProps.persona}/>
           <div className="grid grid-cols-2 gap-4">
             <Button asChild variant="secondary" size="lg" className="w-full">
               <Link href={`/?counter=${cardData.persona.id}`}>
