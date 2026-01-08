@@ -12,6 +12,7 @@ import { SavedCardData, CardData, Persona } from '@/lib/types';
 import { personas } from '@/lib/personas';
 import { ArrowLeft, Bomb, Sparkles, Gem } from 'lucide-react';
 import CardLoader from '@/components/card-loader';
+import { incrementViewCount } from '@/lib/actions';
 
 export default function CardPage() {
   const { cardId } = useParams();
@@ -42,6 +43,12 @@ export default function CardPage() {
       });
     }
   }, [savedCardData]);
+
+  useEffect(() => {
+    if (cardId && typeof cardId === 'string') {
+      incrementViewCount(cardId);
+    }
+  }, [cardId]);
 
   if (isLoading) {
     return (

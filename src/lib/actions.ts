@@ -1,7 +1,7 @@
 
 'use server';
 
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, updateDoc, increment } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 import type { CardData } from './types';
 
@@ -35,6 +35,23 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
     return { success: true, docId: docRef.id };
   } catch (e) {
     console.error('Error adding document: ', e);
+    if (e instanceof Error) {
+        return { success: false, error: e.message };
+    }
+    return { success: false, error: 'An unknown error occurred.' };
+  }
+}
+
+export async function incrementViewCount(cardId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    const { firestore } = initializeFirebase();
+    const cardRef = doc(firestore, 'sharing_cards', cardId);
+    await updateDoc(cardRef, {
+      viewCount: increment(1)
+    });
+    return { success: true };
+  } catch (e) {
+    console.error('Error incrementing view count: ', e);
     if (e instanceof Error) {
         return { success: false, error: e.message };
     }
