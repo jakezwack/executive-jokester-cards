@@ -15,6 +15,7 @@ import CardLoader from '@/components/card-loader';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import MarketplaceLinks from '@/components/marketplace-links';
 
 export default function CardClientPage({ cardId, initialCardData }: { cardId: string, initialCardData: SavedCardData | null }) {
   const [cardData, setCardData] = useState<SavedCardData | null>(null);
@@ -77,9 +78,11 @@ export default function CardClientPage({ cardId, initialCardData }: { cardId: st
   const isOwner = user && cardData && user.uid === cardData.userProfileId;
 
   const getSubmissionStatusUI = () => {
+    if (!cardData) return null; // cardData might not be available yet
+
     if (!isOwner) return null;
 
-    switch (cardData?.submissionStatus) {
+    switch (cardData.submissionStatus) {
         case 'pending':
             return <div className="mt-6 text-center text-amber-400 font-semibold p-3 bg-amber-400/10 rounded-lg border border-amber-400/20">Awaiting Review</div>;
         case 'approved':
@@ -143,6 +146,7 @@ export default function CardClientPage({ cardId, initialCardData }: { cardId: st
             </Link>
           </Button>
            {getSubmissionStatusUI()}
+           <MarketplaceLinks cardId={cardId} />
           <div className="grid grid-cols-2 gap-4">
             <Button asChild variant="secondary" size="lg" className="w-full">
               <Link href={`/?counter=${cardData.persona.id}`}>
