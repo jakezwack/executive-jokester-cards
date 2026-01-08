@@ -20,6 +20,8 @@ export interface CardData {
   customQuote?: string;
 }
 
+export type SubmissionStatus = 'none' | 'pending' | 'approved' | 'rejected';
+
 // This represents the data structure saved in Firestore
 export interface SavedCardData {
   id: string; // Add id field here
@@ -38,4 +40,6 @@ export interface SavedCardData {
   engagementScore: number;
   lastSharedBy: string;
   viewCount: number;
+  submissionStatus?: SubmissionStatus;
+  inspirationalStory?: string;
 }

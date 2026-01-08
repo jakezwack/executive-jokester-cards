@@ -90,6 +90,15 @@
         "lastSharedBy": {
           "type": "string",
           "description": "The handle of the last user who shared the card."
+        },
+        "submissionStatus": {
+          "type": "string",
+          "description": "The status of the card's submission for featuring.",
+          "enum": ["none", "pending", "approved", "rejected"]
+        },
+        "inspirationalStory": {
+            "type": "string",
+            "description": "The user's inspirational story submitted with the card."
         }
       },
       "required": [

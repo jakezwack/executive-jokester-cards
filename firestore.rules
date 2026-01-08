@@ -52,6 +52,17 @@ service cloud.firestore {
     function isResourceOwner(resource) {
         return isSignedIn() && request.auth.uid == resource.data.userProfileId;
     }
+    
+    /**
+     * Checks if the incoming data only contains the allowed fields for submission.
+     */
+     function isSubmittingForFeature() {
+       let incomingKeys = request.resource.data.keys();
+       let allowedKeys = ['inspirationalStory', 'submissionStatus'];
+       // Ensure only allowed fields are being updated
+       return incomingKeys.hasOnly(allowedKeys) &&
+              request.resource.data.submissionStatus == 'pending';
+     }
 
 
     // ----------------------------------------------------------------------
@@ -90,14 +101,17 @@ service cloud.firestore {
      * @path /sharing_cards/{sharingCardId}
      * @allow (get, list) Any user, authenticated or not, can read any card for viral sharing.
      * @allow (create) An authenticated user creating a card, as long as they set themselves as the owner.
-     * @allow (update, delete) Only the user who created the card can modify or delete it.
+     * @allow (update) The card owner can submit for feature, or an admin can manage status. (Client-side logic only handles submission)
+     * @allow (delete) Only the user who created the card can delete it.
      * @principle Enables public deep-linking while restricting writes to the resource owner.
      */
     match /sharing_cards/{sharingCardId} {
       allow get: if true;
       allow list: if true; // Allows for leaderboards/galleries
       allow create: if isOwner(request.resource.data.userProfileId);
-      allow update: if isResourceOwner(resource);
+      allow update: if isResourceOwner(resource) && (
+        isSubmittingForFeature() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount'])
+      );
       allow delete: if isResourceOwner(resource);
     }
     
@@ -167,5 +181,3 @@ service cloud.firestore {
     }
   }
 }
-
-    
