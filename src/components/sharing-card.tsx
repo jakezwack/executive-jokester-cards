@@ -1,3 +1,4 @@
+
 import { forwardRef } from 'react';
 import Image from 'next/image';
 import { CardData } from '@/lib/types';
@@ -35,7 +36,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
              <div className="absolute inset-0 holographic-effect opacity-50"></div>
             <Sparkles className="w-12 h-12 text-amber-400 absolute top-8 right-8 animate-pulse" />
             <div className="relative w-32 h-32 mb-4">
-              <Image src={imageUrl} alt={name} width={128} height={128} className="rounded-full border-4 border-amber-300 object-cover" data-ai-hint="headshot" />
+              <Image src={imageUrl} alt={name} width={128} height={128} priority className="rounded-full border-4 border-amber-300 object-cover" data-ai-hint="headshot" />
             </div>
             <h2 className="text-3xl font-bold leading-tight text-gray-800">{name}</h2>
             <p className="text-lg text-amber-500 font-semibold">{personaName}</p>
@@ -60,7 +61,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
     return (
       <CardBase className="bg-slate-100 text-black font-headline">
         <div className="relative w-full h-full">
-          <Image src={imageUrl} alt={name} fill style={{ objectFit: 'cover' }} data-ai-hint="portrait professional" />
+          <Image src={imageUrl} alt={name} fill priority style={{ objectFit: 'cover' }} data-ai-hint="portrait professional" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 p-6 text-white">
             <h2 className="text-4xl font-bold leading-tight">{name}</h2>
@@ -95,6 +96,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
                   alt={name}
                   width={128}
                   height={128}
+                  priority
                   className="rounded-full border-4 border-primary object-cover"
                   data-ai-hint="headshot"
                 />
@@ -138,6 +140,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
               alt={name}
               width={128}
               height={128}
+              priority
               className="rounded-full border-4 border-primary object-cover"
               data-ai-hint="headshot"
             />
