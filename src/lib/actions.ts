@@ -1,9 +1,8 @@
 'use server';
 
-import { collection, addDoc, serverTimestamp, getFirestore } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
 import type { CardData } from './types';
-import { getAuth } from 'firebase/auth';
 
 export async function saveCard(cardData: CardData): Promise<{ success: boolean; error?: string; docId?: string }> {
   try {
@@ -13,14 +12,18 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
     if (!user) {
       return { success: false, error: 'You must be logged in to save a card.' };
     }
-
-    // Omit the persona object description before saving, we only need the name
+    
     const { persona, ...restOfCardData } = cardData;
     const dataToSave = {
       ...restOfCardData,
-      persona: persona.name, // save only the name
+      personaName: persona.name, // save only the name
+      personaId: persona.id,
       userProfileId: user.uid,
       createdAt: serverTimestamp(),
+      // Initialize analytics fields for the leaderboard
+      shareCount: 0,
+      engagementScore: 0,
+      lastSharedBy: user.displayName || 'Anonymous',
     };
 
 
