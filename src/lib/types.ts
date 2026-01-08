@@ -7,6 +7,7 @@ export interface Persona {
   description: string;
   evolvedName: string;
   evolvedDescription: string;
+  counterPersonaId?: string;
 }
 
 export interface CardData {

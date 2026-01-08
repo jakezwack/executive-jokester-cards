@@ -25,12 +25,20 @@ export default function Home() {
 
   const getDefaultPersona = useCallback(() => {
     if (counterPersonaId) {
+      const counteredPersona = personas.find(p => p.id === counterPersonaId);
+      if (counteredPersona && counteredPersona.counterPersonaId) {
+        const counter = personas.find(p => p.id === counteredPersona.counterPersonaId);
+        if (counter) {
+          return counter;
+        }
+      }
+      // Fallback if counter isn't defined: pick a different random one
       const otherPersonas = personas.filter(p => p.id !== counterPersonaId);
       if (otherPersonas.length > 0) {
         return otherPersonas[Math.floor(Math.random() * otherPersonas.length)];
       }
     }
-    // Fallback to a random persona if no counter ID or if something goes wrong
+    // Default random persona
     return personas[Math.floor(Math.random() * personas.length)];
   }, [counterPersonaId]);
 
