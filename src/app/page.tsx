@@ -183,7 +183,8 @@ export default function Home() {
     htmlToImage.toJpeg(cardRef.current, { quality: 0.95, backgroundColor: '#020617' })
       .then((dataUrl) => {
         const link = document.createElement('a');
-        link.download = 'satirical-card.jpeg';
+        const personaName = cardData.persona.name.toLowerCase().replace(/\s+/g, '-');
+        link.download = `the-executive-jokester-${personaName}.jpeg`;
         link.href = dataUrl;
         link.click();
       })
@@ -195,7 +196,7 @@ export default function Home() {
           description: 'Could not export the card as an image.',
         });
       });
-  }, [cardRef, toast]);
+  }, [cardRef, toast, cardData.persona.name]);
 
 
   return (
