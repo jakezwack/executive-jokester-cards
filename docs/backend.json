@@ -1,0 +1,268 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a realtor's profile information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the UserProfile entity."
+        },
+        "realtorName": {
+          "type": "string",
+          "description": "The name of the realtor."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the realtor."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the realtor's profile image.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "realtorName",
+        "title",
+        "imageUrl"
+      ]
+    },
+    "SharingCard": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SharingCard",
+      "type": "object",
+      "description": "Represents a generated sharing card.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SharingCard entity."
+        },
+        "userProfileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N SharingCard)"
+        },
+        "theme": {
+          "type": "string",
+          "description": "The theme of the sharing card (e.g., Tactical, Magazine)."
+        },
+        "witPresetId": {
+          "type": "string",
+          "description": "Reference to SatiricalWitPreset. (Relationship: SatiricalWitPreset 1:N SharingCard)"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL where the generated card image is stored.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "userProfileId",
+        "theme",
+        "witPresetId",
+        "imageUrl"
+      ]
+    },
+    "SatiricalWitPreset": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "SatiricalWitPreset",
+      "type": "object",
+      "description": "Represents a preset of satirical wit tailored for realtors.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the SatiricalWitPreset entity."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category of the satirical wit (e.g., Meetings, AI Agents)."
+        },
+        "text": {
+          "type": "string",
+          "description": "The actual satirical text of the preset."
+        },
+        "tags": {
+          "type": "array",
+          "description": "Tags associated with the wit preset.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "isSafeForWork": {
+          "type": "boolean",
+          "description": "Indicates if the wit preset is safe for work."
+        }
+      },
+      "required": [
+        "id",
+        "category",
+        "text",
+        "tags",
+        "isSafeForWork"
+      ]
+    },
+    "BuzzwordDefinition": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BuzzwordDefinition",
+      "type": "object",
+      "description": "Represents a definition for a corporate buzzword.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the BuzzwordDefinition entity."
+        },
+        "buzzword": {
+          "type": "string",
+          "description": "The corporate buzzword."
+        },
+        "definition": {
+          "type": "string",
+          "description": "The Executive Jokester definition of the buzzword."
+        }
+      },
+      "required": [
+        "id",
+        "buzzword",
+        "definition"
+      ]
+    },
+    "MarketplaceLink": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "MarketplaceLink",
+      "type": "object",
+      "description": "Represents a link to a product on a marketplace like Etsy or Redbubble.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the MarketplaceLink entity."
+        },
+        "sharingCardId": {
+          "type": "string",
+          "description": "Reference to the SharingCard entity. (Relationship: SharingCard 1:N MarketplaceLink)"
+        },
+        "marketplace": {
+          "type": "string",
+          "description": "The name of the marketplace (e.g., Etsy, Redbubble)."
+        },
+        "productUrl": {
+          "type": "string",
+          "description": "The URL of the product on the marketplace.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "sharingCardId",
+        "marketplace",
+        "productUrl"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information.  Root path for user-owned data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/sharing_cards/{sharingCardId}",
+        "definition": {
+          "entityName": "SharingCard",
+          "schema": {
+            "$ref": "#/backend/entities/SharingCard"
+          },
+          "description": "Stores sharing card data, including a reference to the associated UserProfile via userProfileId for authorization. Includes denormalized 'userProfileId' for authorization independence.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "sharingCardId",
+              "description": "The unique identifier for the sharing card."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/satirical_wit_presets/{satiricalWitPresetId}",
+        "definition": {
+          "entityName": "SatiricalWitPreset",
+          "schema": {
+            "$ref": "#/backend/entities/SatiricalWitPreset"
+          },
+          "description": "Stores satirical wit presets.  These are global read and admin write.",
+          "params": [
+            {
+              "name": "satiricalWitPresetId",
+              "description": "The unique identifier for the satirical wit preset."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/buzzword_definitions/{buzzwordDefinitionId}",
+        "definition": {
+          "entityName": "BuzzwordDefinition",
+          "schema": {
+            "$ref": "#/backend/entities/BuzzwordDefinition"
+          },
+          "description": "Stores buzzword definitions. These are global read and admin write.",
+          "params": [
+            {
+              "name": "buzzwordDefinitionId",
+              "description": "The unique identifier for the buzzword definition."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}",
+        "definition": {
+          "entityName": "MarketplaceLink",
+          "schema": {
+            "$ref": "#/backend/entities/MarketplaceLink"
+          },
+          "description": "Stores marketplace links associated with a sharing card. Nested to ensure only the card owner can manage these.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "sharingCardId",
+              "description": "The unique identifier for the sharing card."
+            },
+            {
+              "name": "marketplaceLinkId",
+              "description": "The unique identifier for the marketplace link."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support the Satirical Sharing Card Generator application, focusing on user profiles, sharing cards, satirical wit presets, buzzword definitions, and marketplace links. It emphasizes authorization independence by denormalizing user profile information into the sharing card documents. This eliminates the need for `get()` calls in security rules, improving performance and security.\n\nThe structure ensures the QAPs by:\n\n1.  **Structural Segregation:** The `satirical_wit_presets` and `buzzword_definitions` collections are separate, allowing for different security rules if needed (e.g., admin-only access to modify them).\n2.  **Path-Based Ownership:** User-generated content (sharing cards) is stored under `/users/{userId}/sharing_cards/{sharingCardId}`, providing clear ownership.\n3.  **Marketplace Links:** These are nested under sharing cards ensuring that only users with access to the card can manipulate those links.  The URL's themselves are open, but the association with a card is restricted.\n\nDenormalization is implemented by including the `userProfileId` in the SharingCard. This allows rules to check the creator of a sharing card without having to `get` the user profile.\n\nThis design supports the application's features, including profile details capture, sharing card themes, image upload, satirical wit presets, card saving, social media sharing, and snap mode. The explicit modeling of entities and the consistent naming conventions enhance clarity and debuggability."
+  }
+}
