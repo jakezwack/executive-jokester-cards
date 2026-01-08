@@ -12,13 +12,12 @@ import { useToast } from '@/hooks/use-toast';
 import { generateSatiricalWit } from '@/ai/flows/generate-satirical-wit';
 import { saveCard } from '@/lib/actions';
 import * as htmlToImage from 'html-to-image';
-import { Target, View } from 'lucide-react';
+import { Target } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
 import { useUser } from '@/firebase';
 import { personas } from '@/lib/personas';
-import { Button } from '@/components/ui/button';
 
 export default function Home() {
   const searchParams = useSearchParams();
@@ -78,7 +77,7 @@ export default function Home() {
       ...prev,
       persona: getDefaultPersona()
     }));
-  }, [getDefaultPersona]);
+  }, [counterPersonaId, getDefaultPersona]);
 
 
   const handleDataChange = (data: Partial<CardData>) => {
