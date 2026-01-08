@@ -19,6 +19,7 @@ import type { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { personas } from '@/lib/personas';
 import { useToast } from '@/hooks/use-toast';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 
 type ControlPanelProps = {
@@ -202,7 +203,13 @@ export default function ControlPanel({
                     <FormLabel>Image</FormLabel>
                     <FormControl>
                       <div className="flex gap-2">
-                        <Input placeholder="https://..." {...field} />
+                        <Input placeholder="https://..." {...field} onFocus={(e) => {
+                          const lockedUrl = PlaceHolderImages.find(img => img.id === 'user-locked')?.imageUrl;
+                          if (e.target.value === lockedUrl) {
+                            onDataChange({ imageUrl: '' });
+                            form.setValue('imageUrl', '', { shouldValidate: true });
+                          }
+                        }}/>
                         <Button asChild variant="outline" size="icon" className="shrink-0">
                           <label htmlFor="file-upload" className="cursor-pointer"><Upload className="h-4 w-4"/></label>
                         </Button>

@@ -44,7 +44,7 @@ export default function Home() {
   }, [counterPersonaId]);
 
 
-  const defaultImage = PlaceHolderImages.find(img => img.id === 'user-default')?.imageUrl || 'https://picsum.photos/seed/user/400/400';
+  const defaultImage = PlaceHolderImages.find(img => img.id === 'user-locked')?.imageUrl || 'https://picsum.photos/seed/user/400/400';
   
   const [cardData, setCardData] = useState<CardData>({
     name: 'Firstname Lastname',
