@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -11,7 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { Upload, WandSparkles, Save, Download, Camera, Loader2, Sparkles } from 'lucide-react';
+import { Upload, WandSparkles, Save, Download, Camera, Loader2, Sparkles, View } from 'lucide-react';
 import ThemeSwitcher from './theme-switcher';
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -28,6 +29,7 @@ type ControlPanelProps = {
   isSaving: boolean;
   showSnapMode: boolean;
   setShowSnapMode: Dispatch<SetStateAction<boolean>>;
+  lastSavedCardId: string | null;
 };
 
 const formSchema = z.object({
@@ -47,7 +49,8 @@ export default function ControlPanel({
   isGenerating,
   isSaving,
   showSnapMode,
-  setShowSnapMode
+  setShowSnapMode,
+  lastSavedCardId,
 }: ControlPanelProps) {
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -258,6 +261,13 @@ export default function ControlPanel({
             Export
           </Button>
         </div>
+        {lastSavedCardId && (
+          <Button asChild variant="default" className="w-full">
+            <Link href={`/card/${lastSavedCardId}`}>
+              <View /> View Saved Card
+            </Link>
+          </Button>
+        )}
         <p className="text-xs text-center text-muted-foreground pt-2">
             A project by theexecutivejokester.com 
         </p>

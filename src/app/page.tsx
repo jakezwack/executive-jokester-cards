@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import Link from 'next/link';
 import { CardData } from '@/lib/types';
 import ControlPanel from '@/components/control-panel';
 import SharingCard from '@/components/sharing-card';
@@ -9,12 +10,13 @@ import { useToast } from '@/hooks/use-toast';
 import { generateSatiricalWit } from '@/ai/flows/generate-satirical-wit';
 import { saveCard } from '@/lib/actions';
 import * as htmlToImage from 'html-to-image';
-import { Target } from 'lucide-react';
+import { Target, View } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
 import { useUser } from '@/firebase';
 import { personas } from '@/lib/personas';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   const defaultImage = PlaceHolderImages.find(img => img.id === 'user-default')?.imageUrl || 'https://picsum.photos/seed/user/400/400';
@@ -33,6 +35,8 @@ export default function Home() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSnapMode, setShowSnapMode] = useState(false);
+  const [lastSavedCardId, setLastSavedCardId] = useState<string | null>(null);
+
 
   const { toast } = useToast();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -55,6 +59,7 @@ export default function Home() {
 
   const handleDataChange = (data: Partial<CardData>) => {
     setCardData(prev => ({ ...prev, ...data }));
+    setLastSavedCardId(null); // Reset saved card ID when data changes
   };
 
   const handleGenerateWit = async () => {
@@ -94,8 +99,10 @@ export default function Home() {
       return;
     }
     setIsSaving(true);
+    setLastSavedCardId(null);
     const result = await saveCard(cardData);
-    if (result.success) {
+    if (result.success && result.docId) {
+      setLastSavedCardId(result.docId);
       toast({
         title: 'Card Saved!',
         description: 'Your masterpiece has been saved to your collection.',
@@ -146,6 +153,7 @@ export default function Home() {
           isSaving={isSaving}
           showSnapMode={showSnapMode}
           setShowSnapMode={setShowSnapMode}
+          lastSavedCardId={lastSavedCardId}
         />
 
         <div className="flex-1 flex items-center justify-center p-4 md:p-8 bg-grid-pattern [background-size:2rem_2rem] relative">
