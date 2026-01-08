@@ -81,7 +81,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
     return (
       <CardBase className="bg-card border-2 border-primary/50 p-1 animate-pulse-slow">
         <div className="w-full h-full border border-primary/30 bg-background p-6 flex flex-col justify-between relative text-center">
-            <div className="absolute inset-0 holographic-effect opacity-50"></div>
+            <div className="absolute inset-0 holographic-effect"></div>
             <div className="absolute top-4 left-4 flex items-center gap-2 text-primary/70">
               <Sparkles className="w-6 h-6"/>
               <span className="font-bold">EVOLVED</span>
@@ -89,7 +89,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
             {ejLogo && (
                 <Image src={ejLogo} alt="The Executive Jokester" width={50} height={50} className="absolute bottom-12 right-4 mix-blend-overlay filter hue-rotate-[280deg] saturate-200 opacity-70" data-ai-hint="logo circular" />
             )}
-            <div className="flex-1 flex flex-col items-center justify-center gap-4">
+            <div className="flex-1 flex flex-col items-center justify-center gap-4 relative">
                <div className="relative w-32 h-32">
                 <Image
                   src={imageUrl}
@@ -112,7 +112,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
                 </div>
               )}
             </div>
-            <div className="text-center text-xs text-muted-foreground font-mono">
+            <div className="text-center text-xs text-muted-foreground font-mono relative">
               theexecutivejokester.com // {persona.id.toUpperCase()}
             </div>
         </div>
