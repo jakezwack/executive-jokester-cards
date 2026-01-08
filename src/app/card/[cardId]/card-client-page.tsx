@@ -13,22 +13,18 @@ import CardLoader from '@/components/card-loader';
 
 
 export default function CardClientPage({ cardId, initialCardData }: { cardId: string, initialCardData: SavedCardData | null }) {
-  const [cardData, setCardData] = useState<CardData | null>(null);
+  const [cardData, setCardData] = useState<SavedCardData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (initialCardData) {
-      const persona = personas.find(p => p.id === initialCardData.personaId) || personas[0];
-      setCardData({
-        name: initialCardData.name,
-        persona: persona,
-        imageUrl: initialCardData.imageUrl,
-        theme: initialCardData.theme,
-        satiricalWit: initialCardData.satiricalWit,
-        bio: initialCardData.bio,
-        isEvolved: initialCardData.isEvolved,
-        customQuote: initialCardData.customQuote,
-      });
+        const persona = personas.find(p => p.id === initialCardData.personaId) || personas[0];
+        const combinedData = {
+          ...initialCardData,
+          persona: persona,
+        };
+        // The data from the server is already the full SavedCardData, just need to merge the persona object
+        setCardData(combinedData as SavedCardData);
     }
     setIsLoading(false);
   }, [initialCardData]);
@@ -61,6 +57,14 @@ export default function CardClientPage({ cardId, initialCardData }: { cardId: st
     );
   }
 
+  const { persona, ...restOfCardData } = cardData;
+
+  const cardProps = {
+    ...restOfCardData,
+    persona: persona || personas.find(p => p.id === cardData.personaId) || personas[0],
+  }
+
+
   return (
     <main className="min-h-screen bg-background text-foreground font-body flex flex-col items-center justify-center p-4">
       <div className="absolute top-4 left-4">
@@ -69,7 +73,7 @@ export default function CardClientPage({ cardId, initialCardData }: { cardId: st
         </Button>
       </div>
       <div className="flex flex-col items-center gap-8">
-        <SharingCard {...cardData} />
+        <SharingCard {...cardProps} />
         <div className="flex flex-col gap-4 w-full max-w-sm">
           <Button asChild size="lg" className="w-full bg-primary/90 hover:bg-primary text-primary-foreground animate-pulse">
             <Link href="/">

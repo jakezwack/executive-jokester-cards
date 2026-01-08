@@ -1,13 +1,15 @@
 
 import { forwardRef } from 'react';
 import Image from 'next/image';
-import { CardData } from '@/lib/types';
+import { CardData, SavedCardData } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { Target, Sparkles } from 'lucide-react';
+import { Target, Sparkles, Share2, Eye, BarChart } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const SharingCard = forwardRef<HTMLDivElement, CardData>((
-  { name, persona, imageUrl, theme, satiricalWit, isEvolved, customQuote },
+type SharingCardProps = CardData & Partial<Pick<SavedCardData, 'shareCount' | 'engagementScore' | 'lastSharedBy' | 'viewCount'>>;
+
+const SharingCard = forwardRef<HTMLDivElement, SharingCardProps>((
+  { name, persona, imageUrl, theme, satiricalWit, isEvolved, customQuote, viewCount, shareCount, engagementScore, lastSharedBy },
   ref
 ) => {
 
@@ -27,6 +29,29 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
 
   const personaName = isEvolved ? persona.evolvedName : persona.name;
   const personaDescription = isEvolved ? persona.evolvedDescription : satiricalWit;
+
+  const AnalyticsBar = () => {
+    if (typeof viewCount === 'undefined') return null;
+    return (
+      <div className="absolute bottom-10 left-0 w-full bg-black/30 backdrop-blur-sm p-1 text-xs text-white/80 flex justify-around items-center">
+         <div className="flex items-center gap-1">
+            <Eye className="w-3 h-3" />
+            <span>{viewCount.toLocaleString()}</span>
+        </div>
+        <div className="flex items-center gap-1">
+            <Share2 className="w-3 h-3" />
+            <span>{shareCount?.toLocaleString() ?? 0}</span>
+        </div>
+        <div className="flex items-center gap-1">
+            <BarChart className="w-3 h-3" />
+            <span>{engagementScore?.toLocaleString() ?? 0}</span>
+        </div>
+         <div className="text-xs truncate max-w-[120px]">
+            Shared by: <span className="font-bold">{lastSharedBy || 'N/A'}</span>
+        </div>
+      </div>
+    )
+  }
 
   if (theme === 'Magazine') {
     if (isEvolved) {
@@ -54,6 +79,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
                     theexecutivejokester.com | ID: {persona.id.toUpperCase()}
                 </p>
              </div>
+             <AnalyticsBar />
           </div>
         </CardBase>
       );
@@ -71,6 +97,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
            <div className="absolute top-4 right-4 text-white font-bold text-lg tracking-widest">
             EXEC JOKESTER
           </div>
+          <AnalyticsBar />
         </div>
       </CardBase>
     );
@@ -157,6 +184,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
         <div className="text-center text-xs text-muted-foreground font-mono">
           theexecutivejokester.com // {persona.id.toUpperCase()}
         </div>
+        <AnalyticsBar />
       </div>
     </CardBase>
   );
