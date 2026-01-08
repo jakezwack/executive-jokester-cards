@@ -17,7 +17,7 @@ export default function Home() {
 
   const [cardData, setCardData] = useState<CardData>({
     name: 'Firstname Lastname',
-    title: 'Your Job Title',
+    title: 'Human Legacy Asset',
     imageUrl: defaultImage,
     theme: 'Tactical',
     satiricalWit: 'I put the "pro" in "procrastination".',

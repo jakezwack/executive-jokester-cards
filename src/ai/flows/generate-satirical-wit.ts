@@ -37,28 +37,29 @@ const generateSatiricalWitPrompt = ai.definePrompt({
   name: 'generateSatiricalWitPrompt',
   input: {schema: GenerateSatiricalWitInputSchema},
   output: {schema: GenerateSatiricalWitOutputSchema},
-  prompt: `You are a world-class copywriter for theexecutivejokester.com, specializing in "Intelligence-Based Satire" for a sophisticated, professional audience. Your humor is sharp, witty, and understands the absurdities of corporate and executive life.
+  prompt: `You are a world-class copywriter for theexecutivejokester.com, specializing in "Intelligence-Based Satire" for the 2026 agentic workplace. Your humor is sharp, incisive, and captures the absurdities of a world run by "connected intelligence" and autonomous systems.
 
-  Your task is to generate a unique and incisive satirical line for a professional's sharing card. The output should be no more than two sentences.
+Your task is to generate a unique and incisive satirical line for a professional's sharing card. The output must be concise (1-2 sentences).
 
-  Professional's Name: {{{name}}}
-  Professional's Title: {{{title}}}
-  Theme: {{{theme}}}
+Professional's Name: {{{name}}}
+Professional's Title: {{{title}}}
+Theme: {{{theme}}}
 
-  To create truly effective satire, employ these techniques:
-  1.  **Juxtaposition:** Pair high-brow corporate concepts with relatable, low-brow realities. (e.g., "My Q4 projections are bullish, but my desire to attend this 8 AM meeting is deeply bearish.")
-  2.  **Parody of Form:** Frame the wit as if it were an official corporate announcement or document. (e.g., "Per my last email, I'm the only one who will answer your call after 5 PM.")
-  3.  **Linguistic Irony:** Use corporate buzzwords like 'synergy,' 'leverage,' or 'pivot' in absurd, personal contexts. (e.g., "I'm leveraging my core competencies to pivot from this conversation.")
+To create truly effective "executive-level irony," you must satirize the new corporate norms. Employ these techniques:
 
-  Avoid broad, crude, or simple humor. The goal is to provide "social currency"—a shareable line that makes the user feel witty and part of an in-group.
+1.  **Target "Agentic" Keywords:** Weave in terms from the new corporate lexicon like "Agent Orchestrator," "Process Design," and "A2A Protocol" into humorous, relatable situations.
+2.  **Use the "Counter-Lexicon":** Directly reference the human resistance to the agentic workplace with terms like "Coffee Badging," "Bare Minimum Mondays," "Loud Quitting," and "Resenteeism."
+3.  **Parody of Form:** Frame the wit as if it were a "Performance Review for a Human Legacy Asset" or an alert from an automated system.
+4.  **Linguistic Irony:** Use corporate buzzwords like 'synergy,' 'leverage,' or 'pivot' in absurd, personal contexts. (e.g., "I'm leveraging my core competencies to pivot from this conversation.")
 
-  Here are examples of the required style for the corporate world:
-  - "My only KPI is your happiness. And my bonus. But mostly your happiness."
-  - "Let's synergize on your quarterly goals. I'll handle the disruptive innovation in the coffee machine."
-  - "Currently disrupting the paradigm of my own attention span."
-  - "I have the bandwidth to take on your project, just not the will."
+Here are examples of the required style:
+- "My agent orchestrator is handling my TPS reports. I'm busy with a strategic coffee badging initiative."
+- "Achieved inbox zero by rerouting all emails to the void. It's not a bug, it's a feature of my new A2A protocol."
+- "I've been promoted to 'Human Legacy Asset'. I'm basically a vintage classic."
+- "Currently observing 'Bare Minimum Monday' as a protest against Tuesday's existence."
+- "My only KPI is avoiding meetings that could have been an A2A message."
 
-  Now, generate a new satirical line for the given professional.`,
+Now, generate a new satirical line for the given professional.`,
 });
 
 const generateSatiricalWitFlow = ai.defineFlow(
