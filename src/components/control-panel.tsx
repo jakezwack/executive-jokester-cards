@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { Upload, WandSparkles, Save, Download, Camera, Loader2 } from 'lucide-react';
@@ -30,6 +31,7 @@ const formSchema = z.object({
   name: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
   title: z.string().min(2, 'Title is too short').max(50, 'Title is too long'),
   imageUrl: z.string().url('Please enter a valid URL'),
+  bio: z.string().max(200, 'Bio is too long').optional(),
 });
 
 export default function ControlPanel({
@@ -50,6 +52,7 @@ export default function ControlPanel({
       name: cardData.name,
       title: cardData.title,
       imageUrl: cardData.imageUrl,
+      bio: cardData.bio || '',
     },
     mode: 'onBlur',
   });
@@ -119,6 +122,25 @@ export default function ControlPanel({
                         </Button>
                         <input id="file-upload" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
                       </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            
+            <Separator />
+            
+            <div className="space-y-4">
+              <h3 className="font-medium">Comedy Style</h3>
+                <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bio</FormLabel>
+                    <FormControl>
+                      <Textarea placeholder="Give the AI a taste of your comedy..." {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

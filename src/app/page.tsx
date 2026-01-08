@@ -21,6 +21,7 @@ export default function Home() {
     imageUrl: defaultImage,
     theme: 'Tactical',
     satiricalWit: 'I put the "pro" in "procrastination".',
+    bio: '',
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -41,6 +42,7 @@ export default function Home() {
         title: cardData.title,
         theme: cardData.theme,
         imageUrl: cardData.imageUrl,
+        bio: cardData.bio,
       });
       if (result.satiricalWit) {
         setCardData(prev => ({ ...prev, satiricalWit: result.satiricalWit }));

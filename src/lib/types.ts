@@ -6,4 +6,5 @@ export interface CardData {
   imageUrl: string;
   theme: CardTheme;
   satiricalWit: string;
+  bio?: string;
 }

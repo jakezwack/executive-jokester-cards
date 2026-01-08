@@ -19,6 +19,7 @@ const GenerateSatiricalWitInputSchema = z.object({
   title: z.string().describe('The title of the professional.'),
   theme: z.string().describe('The theme of the sharing card (e.g., Tactical, Magazine).'),
   imageUrl: z.string().describe('URL for an image of the professional.'),
+  bio: z.string().optional().describe('A short bio to give a taste of the user\'s personal comedic style.'),
 });
 
 export type GenerateSatiricalWitInput = z.infer<typeof GenerateSatiricalWitInputSchema>;
@@ -44,6 +45,9 @@ Your task is to generate a unique and incisive satirical line for a professional
 Professional's Name: {{{name}}}
 Professional's Title: {{{title}}}
 Theme: {{{theme}}}
+{{#if bio}}
+User's Bio (for comedy style reference): {{{bio}}}
+{{/if}}
 
 To create truly effective "executive-level irony," you must satirize the new corporate norms. Employ these techniques:
 
@@ -51,6 +55,9 @@ To create truly effective "executive-level irony," you must satirize the new cor
 2.  **Use the "Counter-Lexicon":** Directly reference the human resistance to the agentic workplace with terms like "Coffee Badging," "Bare Minimum Mondays," "Loud Quitting," and "Resenteeism."
 3.  **Parody of Form:** Frame the wit as if it were a "Performance Review for a Human Legacy Asset" or an alert from an automated system.
 4.  **Linguistic Irony:** Use corporate buzzwords like 'synergy,' 'leverage,' or 'pivot' in absurd, personal contexts. (e.g., "I'm leveraging my core competencies to pivot from this conversation.")
+{{#if bio}}
+5. **Personalize:** If the user has provided a bio, subtly adapt the tone and subject matter to reflect their personal style of humor.
+{{/if}}
 
 Here are examples of the required style:
 - "My agent orchestrator is handling my TPS reports. I'm busy with a strategic coffee badging initiative."
