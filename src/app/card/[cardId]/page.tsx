@@ -10,7 +10,7 @@ import SharingCard from '@/components/sharing-card';
 import { Button } from '@/components/ui/button';
 import { SavedCardData, CardData, Persona } from '@/lib/types';
 import { personas } from '@/lib/personas';
-import { Loader2, ArrowLeft, Bomb, Sparkles } from 'lucide-react';
+import { Loader2, ArrowLeft, Bomb, Sparkles, Gem } from 'lucide-react';
 
 export default function CardPage() {
   const { cardId } = useParams();
@@ -72,17 +72,27 @@ export default function CardPage() {
       </div>
       <div className="flex flex-col items-center gap-8">
         <SharingCard {...cardData} />
-        <div className="flex gap-4">
-            <Button asChild size="lg" className="bg-primary/80 hover:bg-primary animate-pulse">
-                <Link href="/">
-                    <Sparkles className="mr-2"/>
-                    EVOLVE TO UNLOCK HOLOGRAM
-                </Link>
-            </Button>
-            <Button variant="secondary" size="lg" onClick={() => router.push('/')}>
+        <div className="flex flex-col gap-4 w-full max-w-sm">
+          <Button asChild size="lg" className="w-full bg-primary/90 hover:bg-primary text-primary-foreground animate-pulse">
+            <Link href="/">
+              <Sparkles className="mr-2"/>
+              EVOLVE THIS SOUL
+            </Link>
+          </Button>
+          <div className="grid grid-cols-2 gap-4">
+            <Button asChild variant="secondary" size="lg" className="w-full">
+              <Link href="/">
                 <Bomb className="mr-2"/>
                 Retaliate
+              </Link>
             </Button>
+            <Button asChild variant="outline" size="lg" className="w-full">
+               <Link href="/">
+                <Gem className="mr-2"/>
+                Coin Your Own
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
     </main>
