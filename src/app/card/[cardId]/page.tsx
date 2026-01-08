@@ -9,7 +9,7 @@ type Props = {
   params: { cardId: string }
 }
 
-async function getCardData(cardId: string): Promise<SavedCardData | null> {
+export async function getCardData(cardId: string): Promise<SavedCardData | null> {
   try {
     const cardRef = db.collection('sharing_cards').doc(cardId);
     const doc = await cardRef.get();
@@ -18,12 +18,27 @@ async function getCardData(cardId: string): Promise<SavedCardData | null> {
     }
     // Note: Firestore Admin SDK returns a different shape for Timestamps
     const data = doc.data();
+    if (!data) return null;
+
     return {
-      ...data,
       id: doc.id,
-      // Timestamps need to be converted for client-side consumption if needed,
-      // but for initial render, we can often pass them if the client handles it.
-      createdAt: data?.createdAt?.toDate().toISOString() || new Date().toISOString(),
+      name: data.name || '',
+      personaId: data.personaId || '',
+      personaName: data.personaName || '',
+      imageUrl: data.imageUrl || '',
+      theme: data.theme || 'Tactical',
+      satiricalWit: data.satiricalWit || '',
+      isEvolved: data.isEvolved || false,
+      userProfileId: data.userProfileId || '',
+      createdAt: data.createdAt?.toDate().toISOString() || new Date().toISOString(),
+      shareCount: data.shareCount || 0,
+      engagementScore: data.engagementScore || 0,
+      lastSharedBy: data.lastSharedBy || '',
+      viewCount: data.viewCount || 0,
+      submissionStatus: data.submissionStatus || 'none',
+      bio: data.bio || '',
+      customQuote: data.customQuote || '',
+      inspirationalStory: data.inspirationalStory || '',
     } as SavedCardData;
 
   } catch (error) {
@@ -45,28 +60,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${cardData.name} - ${cardData.personaName}`;
   const description = `"${cardData.satiricalWit}" | The Executive Jokester`;
+  const siteUrl = 'https://theexecutivejokester.com';
+  const cardUrl = `${siteUrl}/card/${cardId}`;
 
   return {
     title: title,
     description: description,
+    metadataBase: new URL(siteUrl),
     openGraph: {
       title: title,
       description: description,
-      images: [
-        {
-          url: cardData.imageUrl,
-          width: 400,
-          height: 400,
-          alt: cardData.name,
-        },
-      ],
+      url: cardUrl,
       siteName: 'The Executive Jokester',
+      type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
       title: title,
       description: description,
-      images: [cardData.imageUrl],
+      creator: '@execjokester', // Optional: Add your twitter handle
     },
   };
 }
