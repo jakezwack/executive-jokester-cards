@@ -3,17 +3,20 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CardData } from '@/lib/types';
+import { CardData, Persona } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { Upload, WandSparkles, Save, Download, Camera, Loader2 } from 'lucide-react';
 import ThemeSwitcher from './theme-switcher';
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { personas } from '@/lib/personas';
+
 
 type ControlPanelProps = {
   cardData: CardData;
@@ -29,7 +32,7 @@ type ControlPanelProps = {
 
 const formSchema = z.object({
   name: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
-  title: z.string().min(2, 'Title is too short').max(50, 'Title is too long'),
+  personaId: z.string(),
   imageUrl: z.string().url('Please enter a valid URL'),
   bio: z.string().max(200, 'Bio is too long').optional(),
 });
@@ -50,7 +53,7 @@ export default function ControlPanel({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: cardData.name,
-      title: cardData.title,
+      personaId: cardData.persona.id,
       imageUrl: cardData.imageUrl,
       bio: cardData.bio || '',
     },
@@ -70,6 +73,13 @@ export default function ControlPanel({
     }
   };
 
+  const handlePersonaChange = (personaId: string) => {
+    const selectedPersona = personas.find(p => p.id === personaId);
+    if (selectedPersona) {
+      onDataChange({ persona: selectedPersona });
+    }
+  };
+
   return (
     <div className="w-full md:w-[380px] md:min-w-[380px] bg-card md:border-r border-border flex flex-col">
       <div className="p-4 border-b border-border">
@@ -79,7 +89,7 @@ export default function ControlPanel({
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
         <Form {...form}>
-          <form onBlur={form.handleSubmit((data) => onDataChange(data))} className="space-y-6">
+          <form onBlur={form.handleSubmit((data) => onDataChange({ name: data.name }))} className="space-y-6">
             <div className="space-y-4">
               <h3 className="font-medium">Profile Details</h3>
               <FormField
@@ -97,13 +107,25 @@ export default function ControlPanel({
               />
               <FormField
                 control={form.control}
-                name="title"
+                name="personaId"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Title</FormLabel>
-                    <FormControl>
-                      <Input placeholder="e.g., Master of Spreadsheets" {...field} />
-                    </FormControl>
+                    <FormLabel>Professional Persona</FormLabel>
+                    <Select onValueChange={(value) => { field.onChange(value); handlePersonaChange(value); }} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a persona" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {personas.map((persona) => (
+                          <SelectItem key={persona.id} value={persona.id}>{persona.name}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      {personas.find(p => p.id === field.value)?.description}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}

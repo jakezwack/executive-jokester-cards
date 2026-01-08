@@ -4,29 +4,29 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "UserProfile",
       "type": "object",
-      "description": "Represents a realtor's profile information.",
+      "description": "Represents a user's profile information.",
       "properties": {
         "id": {
           "type": "string",
           "description": "Unique identifier for the UserProfile entity."
         },
-        "realtorName": {
+        "name": {
           "type": "string",
-          "description": "The name of the realtor."
+          "description": "The name of the user."
         },
         "title": {
           "type": "string",
-          "description": "The title of the realtor."
+          "description": "The title of the user."
         },
         "imageUrl": {
           "type": "string",
-          "description": "URL of the realtor's profile image.",
+          "description": "URL of the user's profile image.",
           "format": "uri"
         }
       },
       "required": [
         "id",
-        "realtorName",
+        "name",
         "title",
         "imageUrl"
       ]
@@ -71,7 +71,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "SatiricalWitPreset",
       "type": "object",
-      "description": "Represents a preset of satirical wit tailored for realtors.",
+      "description": "Represents a preset of satirical wit tailored for professionals.",
       "properties": {
         "id": {
           "type": "string",
@@ -159,6 +159,31 @@
         "sharingCardId",
         "marketplace",
         "productUrl"
+      ]
+    },
+    "ProfessionalPersona": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ProfessionalPersona",
+      "type": "object",
+      "description": "Represents a professional persona or 'Office RPG' class archetype.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ProfessionalPersona entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the persona (e.g., 'Agent Orchestrator')."
+        },
+        "description": {
+          "type": "string",
+          "description": "A satirical description of the persona."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
       ]
     }
   },
@@ -261,8 +286,24 @@
             }
           ]
         }
+      },
+      {
+        "path": "/class_archetypes/{classArchetypeId}",
+        "definition": {
+          "entityName": "ProfessionalPersona",
+          "schema": {
+            "$ref": "#/backend/entities/ProfessionalPersona"
+          },
+          "description": "Stores the 'Office RPG' class archetypes. These are globally readable and managed via admin/backend processes.",
+          "params": [
+            {
+              "name": "classArchetypeId",
+              "description": "The unique identifier for the class archetype."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore data structure is designed to support the Satirical Sharing Card Generator application, focusing on user profiles, sharing cards, satirical wit presets, buzzword definitions, and marketplace links. It emphasizes authorization independence by denormalizing user profile information into the sharing card documents. This eliminates the need for `get()` calls in security rules, improving performance and security.\n\nThe structure ensures the QAPs by:\n\n1.  **Structural Segregation:** The `satire_assets` and `buzzword_definitions` collections are separate, allowing for different security rules if needed (e.g., admin-only access to modify them).\n2.  **Path-Based Ownership:** User-generated content (sharing cards) is stored under `/users/{userId}/sharing_cards/{sharingCardId}`, providing clear ownership.\n3.  **Marketplace Links:** These are nested under sharing cards ensuring that only users with access to the card can manipulate those links.  The URL's themselves are open, but the association with a card is restricted.\n\nDenormalization is implemented by including the `userProfileId` in the SharingCard. This allows rules to check the creator of a sharing card without having to `get` the user profile.\n\nThis design supports the application's features, including profile details capture, sharing card themes, image upload, satirical wit presets, card saving, social media sharing, and snap mode. The explicit modeling of entities and the consistent naming conventions enhance clarity and debuggability."
+    "reasoning": "The Firestore data structure is designed to support the Satirical Sharing Card Generator application, focusing on user profiles, sharing cards, satirical wit presets, buzzword definitions, and marketplace links. It emphasizes authorization independence by denormalizing user profile information into the sharing card documents. This eliminates the need for `get()` calls in security rules, improving performance and security.\n\nThe structure ensures the QAPs by:\n\n1.  **Structural Segregation:** The `satire_assets`, `buzzword_definitions`, and `class_archetypes` collections are separate, allowing for different security rules if needed (e.g., admin-only access to modify them).\n2.  **Path-Based Ownership:** User-generated content (sharing cards) is stored under `/users/{userId}/sharing_cards/{sharingCardId}`, providing clear ownership.\n3.  **Marketplace Links:** These are nested under sharing cards ensuring that only users with access to the card can manipulate those links.  The URL's themselves are open, but the association with a card is restricted.\n\nDenormalization is implemented by including the `userProfileId` in the SharingCard. This allows rules to check the creator of a sharing card without having to `get` the user profile.\n\nThis design supports the application's features, including profile details capture, sharing card themes, image upload, satirical wit presets, card saving, social media sharing, and snap mode. The explicit modeling of entities and the consistent naming conventions enhance clarity and debuggability."
   }
 }

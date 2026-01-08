@@ -1,0 +1,29 @@
+{
+  "personas": [
+    {
+      "id": "agent-orchestrator",
+      "name": "Agent Orchestrator",
+      "description": "Spends all day correcting the 'intelligent' mistakes of autonomous systems."
+    },
+    {
+      "id": "coffee-badger",
+      "name": "Coffee Badger",
+      "description": "Masters the art of being visible for the free snacks and invisible for the actual work."
+    },
+    {
+      "id": "resenteeism-rogue",
+      "name": "Resenteeism Rogue",
+      "description": "Mentally quit months ago, but the paycheck has a magnetic personality."
+    },
+    {
+      "id": "pyromancer-of-files",
+      "name": "Pyromancer of Files",
+      "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from legal."
+    },
+    {
+      "id": "human-legacy-asset",
+      "name": "Human Legacy Asset",
+      "description": "Basically a vintage classic. Too expensive to maintain, too iconic to replace."
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Target } from 'lucide-react';
 
 const SharingCard = forwardRef<HTMLDivElement, CardData>((
-  { name, title, imageUrl, theme, satiricalWit },
+  { name, persona, imageUrl, theme, satiricalWit },
   ref
 ) => {
 
@@ -29,7 +29,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
           <div className="absolute bottom-0 left-0 p-6 text-white">
             <h2 className="text-4xl font-bold leading-tight">{name}</h2>
-            <p className="text-lg text-amber-300">{title}</p>
+            <p className="text-lg text-amber-300">{persona.name}</p>
             <p className="mt-4 text-md italic max-w-xs">&ldquo;{satiricalWit}&rdquo;</p>
           </div>
            <div className="absolute top-4 right-4 text-white font-bold text-lg tracking-widest">
@@ -66,7 +66,7 @@ const SharingCard = forwardRef<HTMLDivElement, CardData>((
           </div>
           <div>
             <h2 className="text-2xl font-bold text-foreground">{name}</h2>
-            <p className="text-primary font-medium">{title}</p>
+            <p className="text-primary font-medium">{persona.name}</p>
           </div>
           <p className="text-sm text-muted-foreground max-w-xs italic">&ldquo;{satiricalWit}&rdquo;</p>
         </div>

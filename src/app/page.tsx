@@ -14,13 +14,15 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
 import { useUser } from '@/firebase';
+import { personas } from '@/lib/personas';
 
 export default function Home() {
-  const defaultImage = PlaceHolderImages.find(img => img.id === 'realtor-default')?.imageUrl || 'https://picsum.photos/seed/realtor/400/400';
+  const defaultImage = PlaceHolderImages.find(img => img.id === 'user-default')?.imageUrl || 'https://picsum.photos/seed/user/400/400';
+  const defaultPersona = personas[0];
 
   const [cardData, setCardData] = useState<CardData>({
     name: 'Firstname Lastname',
-    title: 'Human Legacy Asset',
+    persona: defaultPersona,
     imageUrl: defaultImage,
     theme: 'Tactical',
     satiricalWit: 'I put the "pro" in "procrastination".',
@@ -58,7 +60,7 @@ export default function Home() {
     try {
       const result = await generateSatiricalWit({
         name: cardData.name,
-        title: cardData.title,
+        title: cardData.persona.name,
         theme: cardData.theme,
         imageUrl: cardData.imageUrl,
         bio: cardData.bio,

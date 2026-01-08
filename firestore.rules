@@ -6,12 +6,12 @@
  *
  * Data Structure: The core data structure is `/users/{userId}`, which acts as the root for all data owned by a
  * specific user, including their profile, sharing cards, and associated marketplace links. Publicly readable
- * content, such as satirical presets and buzzword definitions, is stored in separate top-level collections.
+ * content, such as satirical presets, buzzword definitions, and class archetypes, is stored in separate top-level collections.
  *
  * Key Security Decisions:
  * - User Isolation: A user can only access and manage data within their own `/users/{userId}` path.
  * - No User Enumeration: Listing documents in the top-level `/users` collection is explicitly forbidden to protect user privacy.
- * - Public Data is Read-Only: Collections like `satire_assets` and `buzzword_definitions` are readable by anyone
+ * - Public Data is Read-Only: Collections like `satire_assets`, `buzzword_definitions`, and `class_archetypes` are readable by anyone
  *   but are not writable by clients. This is the most secure posture, assuming an admin or backend process manages this content.
  * - Default Secure: Any path not explicitly matched is denied access. All write operations require authentication.
  *
@@ -137,6 +137,21 @@ service cloud.firestore {
      * @principle Secures global, read-only content. Assumes this data is managed by an admin via the console or a trusted backend.
      */
     match /buzzword_definitions/{definitionId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description Allows public read access to class archetypes. Writes are disabled.
+     * @path /class_archetypes/{classArchetypeId}
+     * @allow (get, list) Any user, including unauthenticated ones, reading class archetype data.
+     * @deny (create, update, delete) Any user attempting to modify the global class archetypes.
+     * @principle Secures global, read-only content. Assumes this data is managed by an admin via the console or a trusted backend.
+     */
+    match /class_archetypes/{classArchetypeId} {
       allow get: if true;
       allow list: if true;
       allow create: if false;
