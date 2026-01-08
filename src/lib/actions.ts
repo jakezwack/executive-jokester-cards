@@ -3,7 +3,7 @@
 
 import { collection, addDoc, serverTimestamp, doc, updateDoc, increment } from 'firebase/firestore';
 import { initializeFirebase } from '@/firebase';
-import type { CardData } from './types';
+import type { CardData, SavedCardData } from './types';
 
 export async function saveCard(cardData: CardData): Promise<{ success: boolean; error?: string; docId?: string }> {
   try {
@@ -15,7 +15,7 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
     }
     
     const { persona, ...restOfCardData } = cardData;
-    const dataToSave = {
+    const dataToSave: Omit<SavedCardData, 'id'> = {
       ...restOfCardData,
       personaName: persona.name, // save only the name
       personaId: persona.id,

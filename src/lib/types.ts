@@ -22,6 +22,7 @@ export interface CardData {
 
 // This represents the data structure saved in Firestore
 export interface SavedCardData {
+  id: string; // Add id field here
   name: string;
   personaId: string;
   personaName: string;
