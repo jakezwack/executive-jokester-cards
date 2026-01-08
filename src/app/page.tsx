@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { generateSatiricalWit } from '@/ai/flows/generate-satirical-wit';
 import { saveCard } from '@/lib/actions';
 import * as htmlToImage from 'html-to-image';
-import { Target } from 'lucide-react';
+import { Target, Trophy } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useAuth } from '@/firebase';
 import { signInAnonymously } from 'firebase/auth';
@@ -184,6 +184,10 @@ export default function Home() {
             <Target className="w-8 h-8"/>
             <h1 className="text-xl font-bold tracking-tighter">Satirical Sharing Card Generator</h1>
           </div>
+          <Link href="/leaderboard" className="absolute top-4 right-4 flex items-center gap-2 text-primary hover:text-primary/80 transition-colors">
+            <Trophy className="w-6 h-6"/>
+            <span className="text-lg font-bold tracking-tight">Leaderboard</span>
+          </Link>
           <SharingCard ref={cardRef} {...cardData} />
         </div>
       </div>
