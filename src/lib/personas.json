@@ -4,7 +4,7 @@
     {
       "id": "agent-orchestrator",
       "name": "Agent Orchestrator",
-      "description": "Spends all day correcting the 'intelligent' mistakes of autonomous systems.",
+      "description": "Spends all day correcting the 'intelligent' mistakes of autonomous systems and untangling A2A protocol errors.",
       "evolvedName": "The Conductor of Chaos",
       "evolvedDescription": "You don't just manage bots; you compose symphonies from the discord of automation. You find the human note in the digital noise.",
       "counterPersonaId": "coffee-badger"
@@ -12,7 +12,7 @@
     {
       "id": "coffee-badger",
       "name": "Coffee Badger",
-      "description": "Masters the art of being visible for the free snacks and invisible for the actual work.",
+      "description": "Masters the art of being visible for the free snacks and invisible for the actual work. Perfects the 'commute-worthy day' for its social benefits.",
       "evolvedName": "The Ambassador of Serendipity",
       "evolvedDescription": "Your presence isn't about avoiding work; it's about creating the random collisions that spark breakthrough ideas. You are the human algorithm for innovation.",
       "counterPersonaId": "agent-orchestrator"
@@ -20,7 +20,7 @@
     {
       "id": "resenteeism-rogue",
       "name": "Resenteeism Rogue",
-      "description": "Mentally quit months ago, but the paycheck has a magnetic personality.",
+      "description": "Mentally quit months ago due to a toxic culture, but clings to the job for security while quietly 'career cushioning'.",
       "evolvedName": "The Stoic Survivor",
       "evolvedDescription": "You endure the corporate storms with a quiet strength. Your resilience is a testament to the human spirit's ability to find purpose even in the absurd.",
       "counterPersonaId": "human-legacy-asset"
@@ -28,7 +28,7 @@
     {
       "id": "pyromancer-of-files",
       "name": "Pyromancer of Files",
-      "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from legal.",
+      "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from the legal department.",
       "evolvedName": "The Archivist of Zen",
       "evolvedDescription": "You don't just shred paper; you curate mental space. You are the fire that clears the brush so new ideas can grow.",
       "counterPersonaId": "meeting-marathoner"
@@ -36,7 +36,7 @@
     {
       "id": "human-legacy-asset",
       "name": "Human Legacy Asset",
-      "description": "Basically a vintage classic. Too expensive to maintain, too iconic to replace.",
+      "description": "A vintage classic. Too expensive to maintain, too iconic to replace, and holds all the knowledge that was never documented.",
       "evolvedName": "The Keeper of Institutional Wisdom",
       "evolvedDescription": "You are not outdated; you are the foundation. You carry the stories, the lessons, and the soul of the company that no database can ever hold.",
       "counterPersonaId": "agent-orchestrator"
@@ -44,7 +44,7 @@
     {
       "id": "meeting-marathoner",
       "name": "Meeting Marathoner",
-      "description": "Survives back-to-back-to-back meetings on nothing but stale coffee and the sheer will to appear engaged.",
+      "description": "Survives back-to-back meetings on stale coffee and the sheer will to appear engaged. Secretly just wants an email.",
       "evolvedName": "The Weaver of Narratives",
       "evolvedDescription": "Your true skill is weaving disparate conversations into a coherent strategy. You are the voice of clarity in a sea of talk.",
       "counterPersonaId": "pyromancer-of-files"
@@ -80,6 +80,38 @@
       "evolvedName": "The Voice of Truth",
       "evolvedDescription": "You possess the rare courage to be direct. Your clarity is a gift that dispels confusion and accelerates progress.",
       "counterPersonaId": "buzzword-bard"
+    },
+    {
+      "id": "bare-minimum-mondayer",
+      "name": "Bare Minimum Mondayer",
+      "description": "Proactively manages energy by tackling only 3-4 small tasks on Monday to avoid total burnout by Wednesday.",
+      "evolvedName": "The Pacer of Sanity",
+      "evolvedDescription": "You understand that the week is a marathon, not a sprint. Your deliberate pace ensures you not only finish the race but do so with your well-being intact.",
+      "counterPersonaId": "hustle-harbinger"
+    },
+    {
+      "id": "hustle-harbinger",
+      "name": "Hustle Harbinger",
+      "description": "Schedules 7 AM Monday meetings and uses phrases like 'rise and grind' unironically. Believes sleep is a sign of weakness.",
+      "evolvedName": "The Spark of Ambition",
+      "evolvedDescription": "Your relentless drive ignites the team's potential. You are the catalyst that turns conversation into action and ideas into impact.",
+      "counterPersonaId": "bare-minimum-mondayer"
+    },
+    {
+      "id": "career-cushioner",
+      "name": "Career Cushioner",
+      "description": "Quietly upskilling, networking, and taking on side hustles, preparing for a potential exit due to 'rolling layoffs'.",
+      "evolvedName": "The Sovereign Professional",
+      "evolvedDescription": "You are the CEO of your own career. Your constant growth is not a sign of disloyalty, but of a commitment to being an invaluable asset, wherever you go.",
+      "counterPersonaId": "job-hugger"
+    },
+    {
+      "id": "job-hugger",
+      "name": "Job Hugger",
+      "description": "Clings to a secure but unfulfilling role due to market instability, finding comfort in the devil they know.",
+      "evolvedName": "The Anchor of Stability",
+      "evolvedDescription": "In a sea of uncertainty, you provide a steady, reliable presence. Your consistency is the bedrock upon which teams can build and depend.",
+      "counterPersonaId": "career-cushioner"
     }
   ]
 }
