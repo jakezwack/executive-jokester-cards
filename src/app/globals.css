@@ -30,6 +30,28 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
+  .corporate-dark {
+    --background: 228 9% 9%;
+    --foreground: 48 8% 80%;
+    --card: 228 6% 12%;
+    --card-foreground: 48 8% 80%;
+    --popover: 228 9% 9%;
+    --popover-foreground: 48 8% 80%;
+    --primary: 45 86% 62%;
+    --primary-foreground: 45 100% 5%;
+    --secondary: 220 10% 23%;
+    --secondary-foreground: 45 86% 62%;
+    --muted: 220 10% 23%;
+    --muted-foreground: 48 5% 63%;
+    --accent: 45 86% 62%;
+    --accent-foreground: 45 100% 5%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 48 8% 80%;
+    --border: 220 10% 23%;
+    --input: 220 10% 23%;
+    --ring: 45 86% 62%;
+  }
 }
 
 @layer base {
