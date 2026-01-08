@@ -16,11 +16,11 @@ export default function Home() {
   const defaultImage = PlaceHolderImages.find(img => img.id === 'realtor-default')?.imageUrl || 'https://picsum.photos/seed/realtor/400/400';
 
   const [cardData, setCardData] = useState<CardData>({
-    realtorName: 'Firstname Lastname',
-    realtorTitle: 'Executive Realtor',
-    realtorImageUrl: defaultImage,
+    name: 'Firstname Lastname',
+    title: 'Your Job Title',
+    imageUrl: defaultImage,
     theme: 'Tactical',
-    satiricalWit: 'I put the "real" in "real estate" and the "pro" in "procrastination".',
+    satiricalWit: 'I put the "pro" in "procrastination".',
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -37,10 +37,10 @@ export default function Home() {
     setIsGenerating(true);
     try {
       const result = await generateSatiricalWit({
-        realtorName: cardData.realtorName,
-        realtorTitle: cardData.realtorTitle,
+        name: cardData.name,
+        title: cardData.title,
         theme: cardData.theme,
-        realtorImageUrl: cardData.realtorImageUrl,
+        imageUrl: cardData.imageUrl,
       });
       if (result.satiricalWit) {
         setCardData(prev => ({ ...prev, satiricalWit: result.satiricalWit }));

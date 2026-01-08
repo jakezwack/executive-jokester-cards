@@ -1,9 +1,9 @@
 export type CardTheme = 'Tactical' | 'Magazine';
 
 export interface CardData {
-  realtorName: string;
-  realtorTitle: string;
-  realtorImageUrl: string;
+  name: string;
+  title: string;
+  imageUrl: string;
   theme: CardTheme;
   satiricalWit: string;
 }

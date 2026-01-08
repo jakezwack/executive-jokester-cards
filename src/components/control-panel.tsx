@@ -27,9 +27,9 @@ type ControlPanelProps = {
 };
 
 const formSchema = z.object({
-  realtorName: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
-  realtorTitle: z.string().min(2, 'Title is too short').max(50, 'Title is too long'),
-  realtorImageUrl: z.string().url('Please enter a valid URL'),
+  name: z.string().min(2, 'Name is too short').max(50, 'Name is too long'),
+  title: z.string().min(2, 'Title is too short').max(50, 'Title is too long'),
+  imageUrl: z.string().url('Please enter a valid URL'),
 });
 
 export default function ControlPanel({
@@ -47,9 +47,9 @@ export default function ControlPanel({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      realtorName: cardData.realtorName,
-      realtorTitle: cardData.realtorTitle,
-      realtorImageUrl: cardData.realtorImageUrl,
+      name: cardData.name,
+      title: cardData.title,
+      imageUrl: cardData.imageUrl,
     },
     mode: 'onBlur',
   });
@@ -60,8 +60,8 @@ export default function ControlPanel({
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string;
-        form.setValue('realtorImageUrl', result, { shouldValidate: true });
-        onDataChange({ realtorImageUrl: result });
+        form.setValue('imageUrl', result, { shouldValidate: true });
+        onDataChange({ imageUrl: result });
       };
       reader.readAsDataURL(file);
     }
@@ -81,10 +81,10 @@ export default function ControlPanel({
               <h3 className="font-medium">Profile Details</h3>
               <FormField
                 control={form.control}
-                name="realtorName"
+                name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Realtor Name</FormLabel>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input placeholder="e.g., Jane Doe" {...field} />
                     </FormControl>
@@ -94,12 +94,12 @@ export default function ControlPanel({
               />
               <FormField
                 control={form.control}
-                name="realtorTitle"
+                name="title"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g., Master of Homes" {...field} />
+                      <Input placeholder="e.g., Master of Spreadsheets" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -107,7 +107,7 @@ export default function ControlPanel({
               />
               <FormField
                 control={form.control}
-                name="realtorImageUrl"
+                name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Image URL</FormLabel>
