@@ -25,6 +25,7 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
       shareCount: 0,
       engagementScore: 0,
       lastSharedBy: user.displayName || 'Anonymous',
+      viewCount: 0,
     };
 
     // Save to the new top-level sharing_cards collection
@@ -40,5 +41,3 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
     return { success: false, error: 'An unknown error occurred.' };
   }
 }
-
-    

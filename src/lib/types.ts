@@ -1,3 +1,4 @@
+
 export type CardTheme = 'Tactical' | 'Magazine';
 
 export interface Persona {
@@ -35,4 +36,5 @@ export interface SavedCardData {
   shareCount: number;
   engagementScore: number;
   lastSharedBy: string;
+  viewCount: number;
 }
