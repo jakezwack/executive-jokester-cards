@@ -85,7 +85,7 @@ export default function CardPage() {
           </Button>
           <div className="grid grid-cols-2 gap-4">
             <Button asChild variant="secondary" size="lg" className="w-full">
-              <Link href="/">
+              <Link href={`/?counter=${cardData.persona.id}`}>
                 <Bomb className="mr-2"/>
                 Retaliate
               </Link>

@@ -1,7 +1,9 @@
+
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { CardData } from '@/lib/types';
 import ControlPanel from '@/components/control-panel';
 import SharingCard from '@/components/sharing-card';
@@ -19,8 +21,21 @@ import { personas } from '@/lib/personas';
 import { Button } from '@/components/ui/button';
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const counterPersonaId = searchParams.get('counter');
+
+  const getDefaultPersona = () => {
+    if (counterPersonaId) {
+      const otherPersonas = personas.filter(p => p.id !== counterPersonaId);
+      if (otherPersonas.length > 0) {
+        return otherPersonas[Math.floor(Math.random() * otherPersonas.length)];
+      }
+    }
+    return personas[0];
+  }
+
   const defaultImage = PlaceHolderImages.find(img => img.id === 'user-default')?.imageUrl || 'https://picsum.photos/seed/user/400/400';
-  const defaultPersona = personas[0];
+  const defaultPersona = getDefaultPersona();
 
   const [cardData, setCardData] = useState<CardData>({
     name: 'Firstname Lastname',
