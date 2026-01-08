@@ -7,7 +7,21 @@
       "description": "Spends all day correcting the 'intelligent' mistakes of autonomous systems and untangling A2A protocol errors.",
       "evolvedName": "The Conductor of Chaos",
       "evolvedDescription": "You don't just manage bots; you compose symphonies from the discord of automation. You find the human note in the digital noise.",
-      "counterPersonaId": "coffee-badger"
+      "counterPersonaId": "coffee-badger",
+      "moves": [
+        {
+          "name": "Agentic Reality Check",
+          "type": "SKILL",
+          "icon": "🧠",
+          "description": "Dispels all 'AI-Washing' on the field. Forces one opposing player to explain what their AI *actually* does."
+        },
+        {
+          "name": "Process Redesign",
+          "type": "FIX",
+          "icon": "🔧",
+          "description": "Eliminates one 'Legacy Workflow' from play, replacing it with a single-step automated process. Causes 'Human Legacy Asset' to miss a turn."
+        }
+      ]
     },
     {
       "id": "coffee-badger",
@@ -15,7 +29,21 @@
       "description": "Masters the art of being visible for the free snacks and invisible for the actual work. Perfects the 'commute-worthy day' for its social benefits.",
       "evolvedName": "The Ambassador of Serendipity",
       "evolvedDescription": "Your presence isn't about avoiding work; it's about creating the random collisions that spark breakthrough ideas. You are the human algorithm for innovation.",
-      "counterPersonaId": "agent-orchestrator"
+      "counterPersonaId": "agent-orchestrator",
+      "moves": [
+        {
+          "name": "Symbolic Attendance",
+          "type": "BUFF",
+          "icon": "☕",
+          "description": "Appear in the office. Gain +10 Visibility for 3 turns but are immune to any 'Action Item' based attacks."
+        },
+        {
+          "name": "Anti-Perk Inversion",
+          "type": "SKILL",
+          "icon": "🏓",
+          "description": "Convert one 'Forced Socialization' event into a 'Valuable Networking Opportunity', gaining 2 contacts."
+        }
+      ]
     },
     {
       "id": "resenteeism-rogue",
@@ -23,7 +51,21 @@
       "description": "Mentally quit months ago due to a toxic culture, but clings to the job for security while quietly 'career cushioning'.",
       "evolvedName": "The Stoic Survivor",
       "evolvedDescription": "You endure the corporate storms with a quiet strength. Your resilience is a testament to the human spirit's ability to find purpose even in the absurd.",
-      "counterPersonaId": "human-legacy-asset"
+      "counterPersonaId": "human-legacy-asset",
+      "moves": [
+        {
+          "name": "Latent Turnover Risk",
+          "type": "DEBUFF",
+          "icon": "⏳",
+          "description": "Inflicts 'Anxiety' status on one Manager. Their next 'Team-Building' move has a 50% chance to fail."
+        },
+        {
+          "name": "Career Cushioning",
+          "type": "SKILL",
+          "icon": " cushioned",
+          "description": "Secretly gain one 'New Skill' from the discard pile. If targeted by 'Layoff', you may play this card to negate the effect."
+        }
+      ]
     },
     {
       "id": "pyromancer-of-files",
@@ -31,7 +73,21 @@
       "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from the legal department.",
       "evolvedName": "The Archivist of Zen",
       "evolvedDescription": "You don't just shred paper; you curate mental space. You are the fire that clears the brush so new ideas can grow.",
-      "counterPersonaId": "meeting-marathoner"
+      "counterPersonaId": "meeting-marathoner",
+      "moves": [
+        {
+          "name": "Document Catharsis",
+          "type": "ATTACK",
+          "icon": "🔥",
+          "description": "Discard up to 3 'Legacy' cards from your hand. For each card discarded, draw one new 'Idea' card."
+        },
+        {
+          "name": "Ignore Compliance",
+          "type": "BUFF",
+          "icon": "🙈",
+          "description": "For your next turn, you are immune to all 'Audit' and 'Legal Hold' status effects."
+        }
+      ]
     },
     {
       "id": "human-legacy-asset",
@@ -39,7 +95,21 @@
       "description": "A vintage classic. Too expensive to maintain, too iconic to replace, and holds all the knowledge that was never documented.",
       "evolvedName": "The Keeper of Institutional Wisdom",
       "evolvedDescription": "You are not outdated; you are the foundation. You carry the stories, the lessons, and the soul of the company that no database can ever hold.",
-      "counterPersonaId": "agent-orchestrator"
+      "counterPersonaId": "agent-orchestrator",
+      "moves": [
+        {
+          "name": "Undocumented Knowledge",
+          "type": "SKILL",
+          "icon": "📜",
+          "description": "Counter one 'Agentic Workflow' card by revealing a critical process flaw only you knew about. The opposing player must discard their card."
+        },
+        {
+          "name": "Mentorship",
+          "type": "BUFF",
+          "icon": "🤝",
+          "description": "Choose one 'Junior Employee' card. That card gains +20 Skill for the rest of the game."
+        }
+      ]
     },
     {
       "id": "meeting-marathoner",
@@ -47,7 +117,21 @@
       "description": "Survives back-to-back meetings on stale coffee and the sheer will to appear engaged. Secretly just wants an email.",
       "evolvedName": "The Weaver of Narratives",
       "evolvedDescription": "Your true skill is weaving disparate conversations into a coherent strategy. You are the voice of clarity in a sea of talk.",
-      "counterPersonaId": "pyromancer-of-files"
+      "counterPersonaId": "pyromancer-of-files",
+      "moves": [
+        {
+          "name": "Could've Been an Email",
+          "type": "COUNTER",
+          "icon": "📧",
+          "description": "If an opponent plays a 'Status Update' meeting card, you can play this card to cancel its effect immediately."
+        },
+        {
+          "name": "Appear Engaged",
+          "type": "DEFEND",
+          "icon": "🎭",
+          "description": "Negate all 'Attention Drain' effects for one turn. You cannot be targeted by 'Action Item' cards this turn."
+        }
+      ]
     },
     {
       "id": "inbox-zero-paladin",
@@ -55,7 +139,21 @@
       "description": "Believes the only good email is an archived email. Wields 'Mark as Read' with holy righteousness.",
       "evolvedName": "The Guardian of Focus",
       "evolvedDescription": "You protect your team's most valuable asset: their attention. Your quest for zero is a crusade against distraction.",
-      "counterPersonaId": "cc-cleric"
+      "counterPersonaId": "cc-cleric",
+      "moves": [
+        {
+          "name": "Holy Archive",
+          "type": "ATTACK",
+          "icon": "🗄️",
+          "description": "Select up to 5 'Unread Email' cards from the field and banish them to the archive. They cannot be retrieved."
+        },
+        {
+          "name": "Righteous Unsubscribe",
+          "type": "DEFEND",
+          "icon": "🛡️",
+          "description": "Permanently block one source of 'Spam' or 'Newsletter' cards from entering play."
+        }
+      ]
     },
     {
       "id": "cc-cleric",
@@ -63,7 +161,21 @@
       "description": "Copies the entire department on every email to 'ensure alignment' and create a paper trail of plausible deniability.",
       "evolvedName": "The Scribe of Transparency",
       "evolvedDescription": "You ensure that knowledge is never siloed. Your meticulous records are the bedrock of team accountability and shared understanding.",
-      "counterPersonaId": "inbox-zero-paladin"
+      "counterPersonaId": "inbox-zero-paladin",
+      "moves": [
+        {
+          "name": "Visibility Chain",
+          "type": "DEBUFF",
+          "icon": "⛓️",
+          "description": "Force all players to draw 2 extra 'Notification' cards at the start of their next turn."
+        },
+        {
+          "name": "Plausible Deniability",
+          "type": "DEFEND",
+          "icon": "🤷",
+          "description": "When accused of causing 'Confusion', you may point to the email chain to deflect all blame to another player."
+        }
+      ]
     },
     {
       "id": "buzzword-bard",
@@ -71,7 +183,21 @@
       "description": "Speaks entirely in corporate jargon. Is currently 'leveraging synergies' to 'ideate a paradigm shift'.",
       "evolvedName": "The Architect of Vision",
       "evolvedDescription": "You use the language of the business to paint a picture of the future. You give the team a shared vocabulary to build what's next.",
-      "counterPersonaId": "plain-speaker-monk"
+      "counterPersonaId": "plain-speaker-monk",
+      "moves": [
+        {
+          "name": "Synergize",
+          "type": "BUFF",
+          "icon": "✨",
+          "description": "All 'Siloed' cards currently in play are now considered 'Aligned'. All players may collaborate for one turn."
+        },
+        {
+          "name": "Paradigm Shift",
+          "type": "ATTACK",
+          "icon": "💥",
+          "description": "Render all existing 'Strategy' cards obsolete. All players must discard their current strategy and draw a new one."
+        }
+      ]
     },
     {
       "id": "plain-speaker-monk",
@@ -79,7 +205,21 @@
       "description": "Communicates with infuriating clarity, cutting through buzzwords and exposing the simple, uncomfortable truth.",
       "evolvedName": "The Voice of Truth",
       "evolvedDescription": "You possess the rare courage to be direct. Your clarity is a gift that dispels confusion and accelerates progress.",
-      "counterPersonaId": "buzzword-bard"
+      "counterPersonaId": "buzzword-bard",
+      "moves": [
+        {
+          "name": "Cut the Jargon",
+          "type": "COUNTER",
+          "icon": "✂️",
+          "description": "Negate any card with 'Synergy', 'Leverage', or 'Pivot' in its description. The opponent loses their turn."
+        },
+        {
+          "name": "Uncomfortable Truth",
+          "type": "ATTACK",
+          "icon": "🎯",
+          "description": "Target one player. That player must reveal the one 'Task' card they have been avoiding all game."
+        }
+      ]
     },
     {
       "id": "bare-minimum-mondayer",
@@ -87,7 +227,21 @@
       "description": "Proactively manages energy by tackling only 3-4 small tasks on Monday to avoid total burnout by Wednesday.",
       "evolvedName": "The Pacer of Sanity",
       "evolvedDescription": "You understand that the week is a marathon, not a sprint. Your deliberate pace ensures you not only finish the race but do so with your well-being intact.",
-      "counterPersonaId": "hustle-harbinger"
+      "counterPersonaId": "hustle-harbinger",
+      "moves": [
+        {
+          "name": "Energy Management",
+          "type": "DEFEND",
+          "icon": "🧘",
+          "description": "On Mondays, you are immune to all 'Urgent Request' and 'Last Minute Task' cards."
+        },
+        {
+          "name": "Proactive Rest",
+          "type": "BUFF",
+          "icon": "🔋",
+          "description": "Start the week with a 'Well-Rested' status. Draw an extra 'Focus' card on Tuesday."
+        }
+      ]
     },
     {
       "id": "hustle-harbinger",
@@ -95,7 +249,21 @@
       "description": "Schedules 7 AM Monday meetings and uses phrases like 'rise and grind' unironically. Believes sleep is a sign of weakness.",
       "evolvedName": "The Spark of Ambition",
       "evolvedDescription": "Your relentless drive ignites the team's potential. You are the catalyst that turns conversation into action and ideas into impact.",
-      "counterPersonaId": "bare-minimum-mondayer"
+      "counterPersonaId": "bare-minimum-mondayer",
+      "moves": [
+        {
+          "name": "Rise and Grind",
+          "type": "ATTACK",
+          "icon": "☀️",
+          "description": "Forces all players to start their turn by discarding one 'Personal Time' card."
+        },
+        {
+          "name": "Optional-Mandatory Meeting",
+          "type": "DEBUFF",
+          "icon": "📅",
+          "description": "Schedule a 5 PM Friday meeting. All players who attend receive 'Weekend Fatigue' status."
+        }
+      ]
     },
     {
       "id": "career-cushioner",
@@ -103,7 +271,21 @@
       "description": "Quietly upskilling, networking, and taking on side hustles, preparing for a potential exit due to 'rolling layoffs'.",
       "evolvedName": "The Sovereign Professional",
       "evolvedDescription": "You are the CEO of your own career. Your constant growth is not a sign of disloyalty, but of a commitment to being an invaluable asset, wherever you go.",
-      "counterPersonaId": "job-hugger"
+      "counterPersonaId": "job-hugger",
+      "moves": [
+        {
+          "name": "Side Hustle",
+          "type": "BUFF",
+          "icon": "💼",
+          "description": "Generate one 'Alternate Income' token per round. These can be sacrificed to ignore 'Market Downturn' effects."
+        },
+        {
+          "name": "Strategic Upskilling",
+          "type": "SKILL",
+          "icon": "🎓",
+          "description": "Once per game, you may exchange one of your existing Skill cards for any Skill card from the deck."
+        }
+      ]
     },
     {
       "id": "job-hugger",
@@ -111,7 +293,21 @@
       "description": "Clings to a secure but unfulfilling role due to market instability, finding comfort in the devil they know.",
       "evolvedName": "The Anchor of Stability",
       "evolvedDescription": "In a sea of uncertainty, you provide a steady, reliable presence. Your consistency is the bedrock upon which teams can build and depend.",
-      "counterPersonaId": "career-cushioner"
+      "counterPersonaId": "career-cushioner",
+      "moves": [
+        {
+          "name": "Devil You Know",
+          "type": "DEFEND",
+          "icon": "👿",
+          "description": "When faced with a 'Restructuring' or 'Re-org' card, you may choose to remain in your current role, unaffected."
+        },
+        {
+          "name": "Golden Handcuffs",
+          "type": "DEBUFF",
+          "icon": "🔗",
+          "description": "You cannot play any 'Job Search' or 'Networking' cards, but you are immune to the first 'Layoff' card played each game."
+        }
+      ]
     }
   ]
 }

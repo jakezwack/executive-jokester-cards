@@ -10,9 +10,11 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['"Space Grotesk"', 'sans-serif'],
+        body: ['"Roboto Condensed"', '"Space Grotesk"', 'sans-serif'],
         headline: ['"Space Grotesk"', 'sans-serif'],
-        code: ['monospace'],
+        display: ['"Black Ops One"', 'cursive'],
+        orbitron: ['"Orbitron"', 'sans-serif'],
+        condensed: ['"Roboto Condensed"', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',

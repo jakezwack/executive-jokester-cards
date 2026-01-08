@@ -1,6 +1,13 @@
 
 export type CardTheme = 'Tactical' | 'Magazine';
 
+export interface Move {
+  name: string;
+  type: string;
+  icon: string;
+  description: string;
+}
+
 export interface Persona {
   id: string;
   name: string;
@@ -8,6 +15,7 @@ export interface Persona {
   evolvedName: string;
   evolvedDescription: string;
   counterPersonaId?: string;
+  moves?: Move[];
 }
 
 export interface CardData {
