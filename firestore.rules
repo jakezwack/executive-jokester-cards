@@ -113,24 +113,23 @@ service cloud.firestore {
         isSubmittingForFeature() || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount'])
       );
       allow delete: if isResourceOwner(resource);
+      
+        /**
+         * @description Secures marketplace links, which are nested under a user's sharing card.
+         * @path /sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}
+         * @allow (get, list) Anyone can read the marketplace links.
+         * @allow (create, update, delete) Only an admin (or a trusted backend) can manage links. This is the safest default.
+         * @principle Inherits ownership from the parent path, ensuring only the card owner can manage associated links.
+         */
+        match /marketplace_links/{marketplaceLinkId} {
+          allow get: if true;
+          allow list: if true;
+          // For now, only allow reads from the client.
+          // Writes should be done by an admin/backend process.
+          allow write: if false; 
+        }
     }
     
-    /**
-     * @description Secures marketplace links, which are nested under a user's sharing card.
-     * @path /sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}
-     * @allow (get, list) Anyone can read the marketplace links.
-     * @allow (create, update, delete) Only the card owner can manage associated links.
-     * @principle Inherits ownership from the parent path, ensuring only the card owner can manage associated links.
-     */
-    match /sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if isOwner(get(/databases/$(database)/documents/sharing_cards/$(sharingCardId)).data.userProfileId);
-      allow update: if isOwner(resource.data.userProfileId);
-      allow delete: if isOwner(resource.data.userProfileId);
-    }
-
-
     // ----------------------------------------------------------------------
     // Public Read-Only Data
     // ----------------------------------------------------------------------
@@ -145,9 +144,7 @@ service cloud.firestore {
     match /satire_assets/{satireAssetId} {
       allow get: if true;
       allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+      allow write: if false;
     }
 
     /**
@@ -160,9 +157,7 @@ service cloud.firestore {
     match /buzzword_definitions/{definitionId} {
       allow get: if true;
       allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+      allow write: if false;
     }
 
     /**
@@ -175,9 +170,9 @@ service cloud.firestore {
     match /class_archetypes/{classArchetypeId} {
       allow get: if true;
       allow list: if true;
-      allow create: if false;
-      allow update: if false;
-      allow delete: if false;
+      allow write: if false;
     }
   }
 }
+
+    

@@ -195,19 +195,24 @@
         },
         "marketplace": {
           "type": "string",
-          "description": "The name of the marketplace (e.g., Etsy, Redbubble)."
+          "description": "The name of the marketplace (e.g., Amazon, Wealthy Affiliate)."
         },
         "productUrl": {
           "type": "string",
           "description": "The URL of the product on the marketplace.",
           "format": "uri"
+        },
+        "productName": {
+            "type": "string",
+            "description": "The name of the product or call to action text."
         }
       },
       "required": [
         "id",
         "sharingCardId",
         "marketplace",
-        "productUrl"
+        "productUrl",
+        "productName"
       ]
     },
     "ProfessionalPersona": {
@@ -315,7 +320,7 @@
           "schema": {
             "$ref": "#/backend/entities/MarketplaceLink"
           },
-          "description": "Stores marketplace links associated with a sharing card. Read access is public, but write access is restricted to the card owner.",
+          "description": "Stores marketplace links associated with a sharing card. Read access is public, but write access is restricted to the card owner or admin.",
           "params": [
             {
               "name": "sharingCardId",
@@ -348,3 +353,5 @@
     "reasoning": "The Firestore data structure is designed to support the Satirical Sharing Card Generator application, focusing on user profiles, sharing cards, satirical wit presets, buzzword definitions, and marketplace links. It emphasizes authorization independence by denormalizing user profile information into the sharing card documents. This eliminates the need for `get()` calls in security rules, improving performance and security.\n\nThe structure ensures the QAPs by:\n\n1.  **Structural Segregation:** The `satire_assets`, `buzzword_definitions`, and `class_archetypes` collections are separate, allowing for different security rules if needed (e.g., admin-only access to modify them).\n2.  **Path-Based Ownership:** User-generated content (sharing cards) is stored under `/users/{userId}/sharing_cards/{sharingCardId}`, providing clear ownership.\n3.  **Marketplace Links:** These are nested under sharing cards ensuring that only users with access to the card can manipulate those links.  The URL's themselves are open, but the association with a card is restricted.\n\nDenormalization is implemented by including the `userProfileId` in the SharingCard. This allows rules to check the creator of a sharing card without having to `get` the user profile.\n\nThis design supports the application's features, including profile details capture, sharing card themes, image upload, satirical wit presets, card saving, social media sharing, and snap mode. The explicit modeling of entities and the consistent naming conventions enhance clarity and debuggability."
   }
 }
+
+    
