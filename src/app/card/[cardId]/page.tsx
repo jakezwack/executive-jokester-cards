@@ -19,57 +19,60 @@ type Props = {
   params: { cardId: string }
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const cardId = params.cardId;
-
+async function getCardData(cardId: string): Promise<SavedCardData | null> {
   try {
     const cardRef = db.collection('sharing_cards').doc(cardId);
     const doc = await cardRef.get();
-
     if (!doc.exists) {
-      return {
-        title: 'Card Not Found',
-        description: 'This sharing card may have been deleted or the link is incorrect.',
-      };
+      return null;
     }
-
-    const cardData = doc.data() as SavedCardData;
-
-    const title = `${cardData.name} - ${cardData.personaName}`;
-    const description = `"${cardData.satiricalWit}" | The Executive Jokester`;
-
-    return {
-      title: title,
-      description: description,
-      openGraph: {
-        title: title,
-        description: description,
-        images: [
-          {
-            url: cardData.imageUrl,
-            width: 400,
-            height: 400,
-            alt: cardData.name,
-          },
-        ],
-        siteName: 'The Executive Jokester',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: title,
-        description: description,
-        images: [cardData.imageUrl],
-      },
-    };
+    return doc.data() as SavedCardData;
   } catch (error) {
-    console.error('Error generating metadata:', error);
-    return {
-      title: 'The Executive Jokester',
-      description: 'Professional satire for the 2026 agentic workplace.',
-    };
+    console.error('Error fetching card data:', error);
+    return null;
   }
 }
 
-export default function CardPage({ params }: Props) {
-  return <CardClientPage cardId={params.cardId} />;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const cardId = params.cardId;
+  const cardData = await getCardData(cardId);
+
+  if (!cardData) {
+    return {
+      title: 'Card Not Found',
+      description: 'This sharing card may have been deleted or the link is incorrect.',
+    };
+  }
+
+  const title = `${cardData.name} - ${cardData.personaName}`;
+  const description = `"${cardData.satiricalWit}" | The Executive Jokester`;
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      images: [
+        {
+          url: cardData.imageUrl,
+          width: 400,
+          height: 400,
+          alt: cardData.name,
+        },
+      ],
+      siteName: 'The Executive Jokester',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: [cardData.imageUrl],
+    },
+  };
+}
+
+export default async function CardPage({ params }: Props) {
+  const initialCardData = await getCardData(params.cardId);
+  return <CardClientPage cardId={params.cardId} initialCardData={initialCardData} />;
 }

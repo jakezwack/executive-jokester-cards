@@ -2,46 +2,36 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { doc } from 'firebase/firestore';
-import { useFirestore, useMemoFirebase, useDoc } from '@/firebase';
+import { SavedCardData, CardData } from '@/lib/types';
+import { personas } from '@/lib/personas';
+import { incrementViewCount } from '@/lib/actions';
 import SharingCard from '@/components/sharing-card';
 import { Button } from '@/components/ui/button';
-import { SavedCardData, CardData, Persona } from '@/lib/types';
-import { personas } from '@/lib/personas';
 import { ArrowLeft, Bomb, Sparkles, Gem } from 'lucide-react';
 import CardLoader from '@/components/card-loader';
-import { incrementViewCount } from '@/lib/actions';
 
-export default function CardClientPage({ cardId }: { cardId: string }) {
-  const firestore = useFirestore();
-  const router = useRouter();
 
-  const docRef = useMemoFirebase(() => {
-    if (!firestore || typeof cardId !== 'string') return null;
-    return doc(firestore, 'sharing_cards', cardId);
-  }, [firestore, cardId]);
-
-  const { data: savedCardData, isLoading, error } = useDoc<SavedCardData>(docRef);
-  
+export default function CardClientPage({ cardId, initialCardData }: { cardId: string, initialCardData: SavedCardData | null }) {
   const [cardData, setCardData] = useState<CardData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (savedCardData) {
-      const persona = personas.find(p => p.id === savedCardData.personaId) || personas[0];
+    if (initialCardData) {
+      const persona = personas.find(p => p.id === initialCardData.personaId) || personas[0];
       setCardData({
-        name: savedCardData.name,
+        name: initialCardData.name,
         persona: persona,
-        imageUrl: savedCardData.imageUrl,
-        theme: savedCardData.theme,
-        satiricalWit: savedCardData.satiricalWit,
-        bio: savedCardData.bio,
-        isEvolved: savedCardData.isEvolved,
-        customQuote: savedCardData.customQuote,
+        imageUrl: initialCardData.imageUrl,
+        theme: initialCardData.theme,
+        satiricalWit: initialCardData.satiricalWit,
+        bio: initialCardData.bio,
+        isEvolved: initialCardData.isEvolved,
+        customQuote: initialCardData.customQuote,
       });
     }
-  }, [savedCardData]);
+    setIsLoading(false);
+  }, [initialCardData]);
 
   useEffect(() => {
     if (cardId && typeof cardId === 'string') {
@@ -57,7 +47,7 @@ export default function CardClientPage({ cardId }: { cardId: string }) {
     );
   }
 
-  if (error || !cardData) {
+  if (!cardData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
         <div className="text-center p-4">
