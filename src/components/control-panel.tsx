@@ -88,7 +88,17 @@ export default function ControlPanel({
   };
 
   const toggleEvolve = () => {
-    onDataChange({ isEvolved: !cardData.isEvolved });
+    const newEvolvedState = !cardData.isEvolved;
+    onDataChange({ isEvolved: newEvolvedState });
+
+    if (newEvolvedState) {
+        try {
+            const currentEvolutions = parseInt(localStorage.getItem('jokesterEvolutions') || '0', 10);
+            localStorage.setItem('jokesterEvolutions', (currentEvolutions + 1).toString());
+        } catch (error) {
+            console.error("Could not access local storage for evolution tracking.");
+        }
+    }
   };
 
   const handleShare = async () => {
