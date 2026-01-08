@@ -24,22 +24,23 @@ export default function Home() {
   const searchParams = useSearchParams();
   const counterPersonaId = searchParams.get('counter');
 
-  const getDefaultPersona = () => {
+  const getDefaultPersona = useCallback(() => {
     if (counterPersonaId) {
       const otherPersonas = personas.filter(p => p.id !== counterPersonaId);
       if (otherPersonas.length > 0) {
         return otherPersonas[Math.floor(Math.random() * otherPersonas.length)];
       }
     }
-    return personas[0];
-  }
+    // Fallback to a random persona if no counter ID or if something goes wrong
+    return personas[Math.floor(Math.random() * personas.length)];
+  }, [counterPersonaId]);
+
 
   const defaultImage = PlaceHolderImages.find(img => img.id === 'user-default')?.imageUrl || 'https://picsum.photos/seed/user/400/400';
-  const defaultPersona = getDefaultPersona();
-
+  
   const [cardData, setCardData] = useState<CardData>({
     name: 'Firstname Lastname',
-    persona: defaultPersona,
+    persona: getDefaultPersona(),
     imageUrl: defaultImage,
     theme: 'Tactical',
     satiricalWit: 'I put the "pro" in "procrastination".',
@@ -70,6 +71,14 @@ export default function Home() {
       });
     }
   }, [auth, user, isUserLoading, toast]);
+
+  // When the counterPersonaId changes, update the persona in the cardData
+  useEffect(() => {
+    setCardData(prev => ({
+      ...prev,
+      persona: getDefaultPersona()
+    }));
+  }, [getDefaultPersona]);
 
 
   const handleDataChange = (data: Partial<CardData>) => {
