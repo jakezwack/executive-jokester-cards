@@ -31,7 +31,7 @@
       "description": "Finds catharsis in mass-deleting legacy documents and ignoring the screams from legal.",
       "evolvedName": "The Archivist of Zen",
       "evolvedDescription": "You don't just shred paper; you curate mental space. You are the fire that clears the brush so new ideas can grow.",
-      "counterPersonaId": "resenteeism-rogue"
+      "counterPersonaId": "meeting-marathoner"
     },
     {
       "id": "human-legacy-asset",
@@ -40,6 +40,46 @@
       "evolvedName": "The Keeper of Institutional Wisdom",
       "evolvedDescription": "You are not outdated; you are the foundation. You carry the stories, the lessons, and the soul of the company that no database can ever hold.",
       "counterPersonaId": "agent-orchestrator"
+    },
+    {
+      "id": "meeting-marathoner",
+      "name": "Meeting Marathoner",
+      "description": "Survives back-to-back-to-back meetings on nothing but stale coffee and the sheer will to appear engaged.",
+      "evolvedName": "The Weaver of Narratives",
+      "evolvedDescription": "Your true skill is weaving disparate conversations into a coherent strategy. You are the voice of clarity in a sea of talk.",
+      "counterPersonaId": "pyromancer-of-files"
+    },
+    {
+      "id": "inbox-zero-paladin",
+      "name": "Inbox Zero Paladin",
+      "description": "Believes the only good email is an archived email. Wields 'Mark as Read' with holy righteousness.",
+      "evolvedName": "The Guardian of Focus",
+      "evolvedDescription": "You protect your team's most valuable asset: their attention. Your quest for zero is a crusade against distraction.",
+      "counterPersonaId": "cc-cleric"
+    },
+    {
+      "id": "cc-cleric",
+      "name": "CC Cleric",
+      "description": "Copies the entire department on every email to 'ensure alignment' and create a paper trail of plausible deniability.",
+      "evolvedName": "The Scribe of Transparency",
+      "evolvedDescription": "You ensure that knowledge is never siloed. Your meticulous records are the bedrock of team accountability and shared understanding.",
+      "counterPersonaId": "inbox-zero-paladin"
+    },
+    {
+      "id": "buzzword-bard",
+      "name": "Buzzword Bard",
+      "description": "Speaks entirely in corporate jargon. Is currently 'leveraging synergies' to 'ideate a paradigm shift'.",
+      "evolvedName": "The Architect of Vision",
+      "evolvedDescription": "You use the language of the business to paint a picture of the future. You give the team a shared vocabulary to build what's next.",
+      "counterPersonaId": "plain-speaker-monk"
+    },
+    {
+      "id": "plain-speaker-monk",
+      "name": "Plain-Speaker Monk",
+      "description": "Communicates with infuriating clarity, cutting through buzzwords and exposing the simple, uncomfortable truth.",
+      "evolvedName": "The Voice of Truth",
+      "evolvedDescription": "You possess the rare courage to be direct. Your clarity is a gift that dispels confusion and accelerates progress.",
+      "counterPersonaId": "buzzword-bard"
     }
   ]
 }
