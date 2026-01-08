@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "UserProfile": {
@@ -49,22 +50,46 @@
           "type": "string",
           "description": "The theme of the sharing card (e.g., Tactical, Magazine)."
         },
-        "witPresetId": {
+        "personaId": {
           "type": "string",
-          "description": "Reference to SatiricalWitPreset. (Relationship: SatiricalWitPreset 1:N SharingCard)"
+          "description": "The ID of the selected persona."
+        },
+        "personaName": {
+          "type": "string",
+          "description": "The name of the selected persona."
         },
         "imageUrl": {
           "type": "string",
-          "description": "URL where the generated card image is stored.",
+          "description": "URL of the user's profile image for the card.",
           "format": "uri"
+        },
+        "satiricalWit": {
+            "type": "string",
+            "description": "The generated satirical text."
+        },
+        "customQuote": {
+            "type": "string",
+            "description": "A custom quote from the user for the evolved card."
+        },
+        "isEvolved": {
+            "type": "boolean",
+            "description": "Indicates if the card is in its evolved state."
+        },
+        "name": {
+            "type": "string",
+            "description": "The name of the person on the card."
         }
       },
       "required": [
         "id",
         "userProfileId",
         "theme",
-        "witPresetId",
-        "imageUrl"
+        "personaId",
+        "personaName",
+        "imageUrl",
+        "satiricalWit",
+        "isEvolved",
+        "name"
       ]
     },
     "SatiricalWitPreset": {
@@ -202,7 +227,7 @@
           "schema": {
             "$ref": "#/backend/entities/UserProfile"
           },
-          "description": "Stores user profile information.  Root path for user-owned data.",
+          "description": "Stores user profile information. Root path for user-owned data.",
           "params": [
             {
               "name": "userId",
@@ -212,18 +237,14 @@
         }
       },
       {
-        "path": "/users/{userId}/sharing_cards/{sharingCardId}",
+        "path": "/sharing_cards/{sharingCardId}",
         "definition": {
           "entityName": "SharingCard",
           "schema": {
             "$ref": "#/backend/entities/SharingCard"
           },
-          "description": "Stores sharing card data, including a reference to the associated UserProfile via userProfileId for authorization. Includes denormalized 'userProfileId' for authorization independence.",
+          "description": "Publicly accessible sharing cards. Contains denormalized 'userProfileId' for ownership checks in rules.",
           "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user."
-            },
             {
               "name": "sharingCardId",
               "description": "The unique identifier for the sharing card."
@@ -264,18 +285,14 @@
         }
       },
       {
-        "path": "/users/{userId}/sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}",
+        "path": "/sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}",
         "definition": {
           "entityName": "MarketplaceLink",
           "schema": {
             "$ref": "#/backend/entities/MarketplaceLink"
           },
-          "description": "Stores marketplace links associated with a sharing card. Nested to ensure only the card owner can manage these.",
+          "description": "Stores marketplace links associated with a sharing card. Read access is public, but write access is restricted to the card owner.",
           "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user."
-            },
             {
               "name": "sharingCardId",
               "description": "The unique identifier for the sharing card."
@@ -307,3 +324,5 @@
     "reasoning": "The Firestore data structure is designed to support the Satirical Sharing Card Generator application, focusing on user profiles, sharing cards, satirical wit presets, buzzword definitions, and marketplace links. It emphasizes authorization independence by denormalizing user profile information into the sharing card documents. This eliminates the need for `get()` calls in security rules, improving performance and security.\n\nThe structure ensures the QAPs by:\n\n1.  **Structural Segregation:** The `satire_assets`, `buzzword_definitions`, and `class_archetypes` collections are separate, allowing for different security rules if needed (e.g., admin-only access to modify them).\n2.  **Path-Based Ownership:** User-generated content (sharing cards) is stored under `/users/{userId}/sharing_cards/{sharingCardId}`, providing clear ownership.\n3.  **Marketplace Links:** These are nested under sharing cards ensuring that only users with access to the card can manipulate those links.  The URL's themselves are open, but the association with a card is restricted.\n\nDenormalization is implemented by including the `userProfileId` in the SharingCard. This allows rules to check the creator of a sharing card without having to `get` the user profile.\n\nThis design supports the application's features, including profile details capture, sharing card themes, image upload, satirical wit presets, card saving, social media sharing, and snap mode. The explicit modeling of entities and the consistent naming conventions enhance clarity and debuggability."
   }
 }
+
+    

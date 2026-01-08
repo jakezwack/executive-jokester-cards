@@ -1,28 +1,27 @@
+
 /**
- * Core Philosophy: This ruleset enforces a strict user-ownership model where all user-generated content is stored
- * within a user-specific document tree. It provides a clear separation between private, user-owned data and
- * globally accessible public data. The primary goal is strong authorization while maintaining flexibility for
- * rapid application prototyping.
+ * Core Philosophy: This ruleset enforces a strict user-ownership model where user-generated content is stored
+ * in publicly readable collections but write access is restricted to the owner. It provides a clear separation
+ * between private user data and globally accessible public data. The primary goal is strong authorization while
+ * maintaining flexibility for viral sharing and deep-linking.
  *
- * Data Structure: The core data structure is `/users/{userId}`, which acts as the root for all data owned by a
- * specific user, including their profile, sharing cards, and associated marketplace links. Publicly readable
- * content, such as satirical presets, buzzword definitions, and class archetypes, is stored in separate top-level collections.
+ * Data Structure:
+ * - `/users/{userId}`: Acts as the root for all data private to a specific user, like their profile.
+ * - `/sharing_cards/{cardId}`: A public collection of all sharing cards. Anyone can read, but only the owner can write.
+ * - Public assets (`satire_assets`, `buzzword_definitions`, `class_archetypes`) are top-level, read-only collections.
  *
  * Key Security Decisions:
- * - User Isolation: A user can only access and manage data within their own `/users/{userId}` path.
- * - No User Enumeration: Listing documents in the top-level `/users` collection is explicitly forbidden to protect user privacy.
+ * - User Isolation: A user can only manage data within their own `/users/{userId}` path and write to documents they own.
+ * - No User Enumeration: Listing documents in the top-level `/users` collection is forbidden.
  * - Public Data is Read-Only: Collections like `satire_assets`, `buzzword_definitions`, and `class_archetypes` are readable by anyone
  *   but are not writable by clients. This is the most secure posture, assuming an admin or backend process manages this content.
+ * - Viral Sharing Support: The `/sharing_cards` collection is publicly readable, allowing anyone with a link to view a card.
+ *   This is essential for social sharing and deep-linking.
  * - Default Secure: Any path not explicitly matched is denied access. All write operations require authentication.
  *
- * Denormalization for Authorization: The `SharingCard` documents under `/users/{userId}/sharing_cards` contain a denormalized
- * `userProfileId` field. This allows security rules to validate ownership on creation without needing a costly `get()` call
- * to the parent user profile, leading to simpler and more performant rules.
- *
- * Structural Segregation: User-private data (profiles, sharing cards) is segregated into the `/users/{userId}` path,
- * while public data (`satire_assets`, `buzzword_definitions`) resides in its own top-level collections. This
- * separation simplifies security logic, preventing accidental exposure of private data and allowing for safe, efficient
- * public list operations.
+ * Denormalization for Authorization: The `SharingCard` documents contain a denormalized `userProfileId` field. This allows
+ * security rules to validate ownership on create, update, and delete operations without needing a costly `get()` call
+ * to another document, leading to simpler and more performant rules.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -46,17 +45,17 @@ service cloud.firestore {
     function isOwner(userId) {
       return isSignedIn() && request.auth.uid == userId;
     }
-
+    
     /**
-     * Checks for ownership on an existing resource.
-     * CRITICAL: Used for all update and delete operations to prevent acting on non-existent documents.
+     * Checks for ownership on an existing resource for read operations.
      */
-    function isExistingOwner(userId) {
-      return isOwner(userId) && resource != null;
+    function isResourceOwner(resource) {
+        return isSignedIn() && request.auth.uid == resource.data.userProfileId;
     }
 
+
     // ----------------------------------------------------------------------
-    // User-Owned Data
+    // User-Private Data
     // ----------------------------------------------------------------------
 
     /**
@@ -72,43 +71,51 @@ service cloud.firestore {
       allow get: if isOwner(userId);
       allow list: if false;
       allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
+      allow update: if isOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isOwner(userId);
+
+        // DEPRECATED: Sub-collections for sharing cards are no longer used.
+        // This is kept to deny any accidental writes to the old path.
+        match /sharing_cards/{sharingCardId} {
+            allow read, write: if false;
+        }
     }
+
+    // ----------------------------------------------------------------------
+    // Public Sharing & User-Owned Content
+    // ----------------------------------------------------------------------
 
     /**
-     * @description Secures sharing cards, which are owned by a user.
-     * @path /users/{userId}/sharing_cards/{sharingCardId}
-     * @allow (create) The user creating a new sharing card within their own data space.
-     * @allow (list) The user listing all of their own created sharing cards.
-     * @deny (create) A user trying to create a sharing card under another user's ID.
-     * @deny (update) A user trying to modify a sharing card they do not own.
-     * @principle Enforces strict document ownership within a user-specific subcollection.
+     * @description Secures sharing cards in a public collection.
+     * @path /sharing_cards/{sharingCardId}
+     * @allow (get, list) Any user, authenticated or not, can read any card for viral sharing.
+     * @allow (create) An authenticated user creating a card, as long as they set themselves as the owner.
+     * @allow (update, delete) Only the user who created the card can modify or delete it.
+     * @principle Enables public deep-linking while restricting writes to the resource owner.
      */
-    match /users/{userId}/sharing_cards/{sharingCardId} {
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId) && request.resource.data.userProfileId == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.userProfileId == resource.data.userProfileId;
-      allow delete: if isExistingOwner(userId);
+    match /sharing_cards/{sharingCardId} {
+      allow get: if true;
+      allow list: if true; // Allows for leaderboards/galleries
+      allow create: if isOwner(request.resource.data.userProfileId);
+      allow update: if isResourceOwner(resource);
+      allow delete: if isResourceOwner(resource);
     }
-
+    
     /**
      * @description Secures marketplace links, which are nested under a user's sharing card.
-     * @path /users/{userId}/sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}
-     * @allow (create) The card owner adding a new marketplace link to their card.
-     * @allow (delete) The card owner removing a marketplace link from their card.
-     * @deny (get) Another user trying to read a specific marketplace link document.
-     * @deny (list) Another user trying to list all links for a card they don't own.
+     * @path /sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId}
+     * @allow (get, list) Anyone can read the marketplace links.
+     * @allow (create, update, delete) Only the card owner can manage associated links.
      * @principle Inherits ownership from the parent path, ensuring only the card owner can manage associated links.
      */
-    match /users/{userId}/sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId} {
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId) && request.resource.data.sharingCardId == sharingCardId;
-      allow update: if isExistingOwner(userId) && request.resource.data.sharingCardId == resource.data.sharingCardId;
-      allow delete: if isExistingOwner(userId);
+    match /sharing_cards/{sharingCardId}/marketplace_links/{marketplaceLinkId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isOwner(get(/databases/$(database)/documents/sharing_cards/$(sharingCardId)).data.userProfileId);
+      allow update: if isOwner(resource.data.userProfileId);
+      allow delete: if isOwner(resource.data.userProfileId);
     }
+
 
     // ----------------------------------------------------------------------
     // Public Read-Only Data
@@ -160,3 +167,5 @@ service cloud.firestore {
     }
   }
 }
+
+    

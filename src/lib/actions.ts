@@ -1,3 +1,4 @@
+
 'use server';
 
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
@@ -26,8 +27,8 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
       lastSharedBy: user.displayName || 'Anonymous',
     };
 
-
-    const docRef = await addDoc(collection(firestore, `users/${user.uid}/sharing_cards`), dataToSave);
+    // Save to the new top-level sharing_cards collection
+    const docRef = await addDoc(collection(firestore, 'sharing_cards'), dataToSave);
 
     console.log('Document written with ID: ', docRef.id);
     return { success: true, docId: docRef.id };
@@ -39,3 +40,5 @@ export async function saveCard(cardData: CardData): Promise<{ success: boolean; 
     return { success: false, error: 'An unknown error occurred.' };
   }
 }
+
+    
