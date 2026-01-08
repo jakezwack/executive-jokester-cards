@@ -13,7 +13,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
-import { Upload, WandSparkles, Save, Share2, Camera, Loader2, Sparkles, View } from 'lucide-react';
+import { Upload, WandSparkles, Save, Share2, Camera, Loader2, Sparkles, View, Palette } from 'lucide-react';
 import ThemeSwitcher from './theme-switcher';
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -25,10 +25,12 @@ type ControlPanelProps = {
   cardData: CardData;
   onDataChange: (data: Partial<CardData>) => void;
   onGenerateWit: () => void;
+  onSatirizeImage: () => void;
   onSaveCard: () => void;
   onExport: () => void;
   isGenerating: boolean;
   isSaving: boolean;
+  isSatirizing: boolean;
   showSnapMode: boolean;
   setShowSnapMode: Dispatch<SetStateAction<boolean>>;
   lastSavedCardId: string | null;
@@ -46,10 +48,12 @@ export default function ControlPanel({
   cardData,
   onDataChange,
   onGenerateWit,
+  onSatirizeImage,
   onSaveCard,
   onExport,
   isGenerating,
   isSaving,
+  isSatirizing,
   showSnapMode,
   setShowSnapMode,
   lastSavedCardId,
@@ -195,7 +199,7 @@ export default function ControlPanel({
                 name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Image URL</FormLabel>
+                    <FormLabel>Image</FormLabel>
                     <FormControl>
                       <div className="flex gap-2">
                         <Input placeholder="https://..." {...field} />
@@ -203,6 +207,9 @@ export default function ControlPanel({
                           <label htmlFor="file-upload" className="cursor-pointer"><Upload className="h-4 w-4"/></label>
                         </Button>
                         <input id="file-upload" type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+                        <Button variant="outline" size="icon" className="shrink-0" onClick={onSatirizeImage} disabled={isSatirizing}>
+                           {isSatirizing ? <Loader2 className="animate-spin" /> : <Palette className="h-4 w-4" />}
+                        </Button>
                       </div>
                     </FormControl>
                     <FormMessage />

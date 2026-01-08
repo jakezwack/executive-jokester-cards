@@ -10,6 +10,7 @@ import SharingCard from '@/components/sharing-card';
 import SnapModeView from '@/components/snap-mode-view';
 import { useToast } from '@/hooks/use-toast';
 import { generateSatiricalWit } from '@/ai/flows/generate-satirical-wit';
+import { satirizeImage } from '@/ai/flows/satirize-image';
 import { saveCard } from '@/lib/actions';
 import * as htmlToImage from 'html-to-image';
 import { Target, Trophy } from 'lucide-react';
@@ -57,6 +58,7 @@ export default function Home() {
   });
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSatirizing, setIsSatirizing] = useState(false);
   const [showSnapMode, setShowSnapMode] = useState(false);
   const [lastSavedCardId, setLastSavedCardId] = useState<string | null>(null);
 
@@ -119,6 +121,31 @@ export default function Home() {
       setIsGenerating(false);
     }
   };
+  
+  const handleSatirizeImage = async () => {
+    setIsSatirizing(true);
+    try {
+      const result = await satirizeImage({
+        imageUrl: cardData.imageUrl,
+        personaName: cardData.persona.name,
+        personaDescription: cardData.persona.description,
+      });
+      if (result.satirizedImageUrl) {
+        setCardData(prev => ({ ...prev, imageUrl: result.satirizedImageUrl }));
+      } else {
+        throw new Error('Failed to satirize image. The result was empty.');
+      }
+    } catch (error) {
+      console.error('Error satirizing image:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Image Generation Failed',
+        description: 'Could not generate the satirical image. Please try again.',
+      });
+    } finally {
+      setIsSatirizing(false);
+    }
+  };
 
   const handleSaveCard = async () => {
     if (!user) {
@@ -178,10 +205,12 @@ export default function Home() {
           cardData={cardData}
           onDataChange={handleDataChange}
           onGenerateWit={handleGenerateWit}
+          onSatirizeImage={handleSatirizeImage}
           onSaveCard={handleSaveCard}
           onExport={handleExport}
           isGenerating={isGenerating}
           isSaving={isSaving}
+          isSatirizing={isSatirizing}
           showSnapMode={showSnapMode}
           setShowSnapMode={setShowSnapMode}
           lastSavedCardId={lastSavedCardId}

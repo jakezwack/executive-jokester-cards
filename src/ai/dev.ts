@@ -3,3 +3,4 @@ config();
 
 import '@/ai/flows/generate-satirical-wit.ts';
 import '@/ai/flows/suggest-products.ts';
+import '@/ai/flows/satirize-image.ts';
