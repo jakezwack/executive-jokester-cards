@@ -79,10 +79,6 @@ export default function MarketplaceLinks({ cardId, persona }: { cardId: string; 
     const params = new URLSearchParams({
         k: searchQuery,
         tag: "gaggiftsfor06-20", // Your affiliate tag
-        linkCode: "ll2",
-        linkId: "39c50ad279ee31ee92e4b205c17595d2",
-        language: "en_US",
-        ref_: "as_li_ss_tl",
     });
     return `${baseUrl}?${params.toString()}`;
   }
@@ -114,7 +110,7 @@ export default function MarketplaceLinks({ cardId, persona }: { cardId: string; 
         </Button>
       ))}
       <Button size="lg" className="w-full" variant="outline" onClick={handleSuggestProducts} disabled={isSuggesting}>
-        {isSuggesting ? <Loader2 className="animate-spin" /> : <Bot />}
+        {isSuggesting ? <Loader2 className="animate-spin" /> : <Bot className="mr-2" />}
         Get AI-Suggested Gear
       </Button>
 

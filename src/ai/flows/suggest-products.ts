@@ -41,6 +41,8 @@ const suggestProductsPrompt = ai.definePrompt({
   output: {schema: SuggestProductsOutputSchema},
   prompt: `You are an expert at finding the perfect, slightly absurd "corporate survival gear" on Amazon. Your task is to suggest 1-2 products that would humorously "solve" the problem for a given professional persona.
 
+Your suggestions should be genuinely useful but framed with a satirical, witty tone.
+
 Persona Name: {{{personaName}}}
 Persona Description: {{{personaDescription}}}
 
