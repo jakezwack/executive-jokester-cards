@@ -1,19 +1,9 @@
 
-import { initializeApp, getApps, App } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
 import { Metadata } from 'next';
 import CardClientPage from './card-client-page';
 import { SavedCardData } from '@/lib/types';
+import { db } from '@/lib/firebase-admin';
 
-// Initialize Firebase Admin SDK
-let adminApp: App;
-if (!getApps().length) {
-  adminApp = initializeApp();
-} else {
-  adminApp = getApps()[0];
-}
-
-const db = getFirestore(adminApp);
 
 type Props = {
   params: { cardId: string }
@@ -26,7 +16,16 @@ async function getCardData(cardId: string): Promise<SavedCardData | null> {
     if (!doc.exists) {
       return null;
     }
-    return doc.data() as SavedCardData;
+    // Note: Firestore Admin SDK returns a different shape for Timestamps
+    const data = doc.data();
+    return {
+      ...data,
+      id: doc.id,
+      // Timestamps need to be converted for client-side consumption if needed,
+      // but for initial render, we can often pass them if the client handles it.
+      createdAt: data?.createdAt?.toDate().toISOString() || new Date().toISOString(),
+    } as SavedCardData;
+
   } catch (error) {
     console.error('Error fetching card data:', error);
     return null;

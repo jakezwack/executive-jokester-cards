@@ -1,6 +1,4 @@
 
-import { initializeApp, getApps, App } from 'firebase-admin/app';
-import { getFirestore } from 'firebase-admin/firestore';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -8,18 +6,7 @@ import { ArrowLeft, Trophy } from 'lucide-react';
 import { SavedCardData } from '@/lib/types';
 import { personas } from '@/lib/personas';
 import SharingCard from '@/components/sharing-card';
-import CardLoader from '@/components/card-loader';
-
-// Initialize Firebase Admin SDK
-let adminApp: App;
-if (!getApps().length) {
-  adminApp = initializeApp();
-} else {
-  adminApp = getApps()[0];
-}
-
-const db = getFirestore(adminApp);
-
+import { db } from '@/lib/firebase-admin';
 
 export const metadata: Metadata = {
   title: 'Leaderboard | The Executive Jokester',
@@ -35,7 +22,14 @@ async function getLeaderboardData(): Promise<SavedCardData[]> {
       return [];
     }
     
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as SavedCardData));
+    return snapshot.docs.map(doc => {
+        const data = doc.data();
+        return { 
+            id: doc.id, 
+            ...data,
+            createdAt: data.createdAt.toDate().toISOString(),
+        } as SavedCardData
+    });
 
   } catch (error) {
     console.error('Error fetching leaderboard data:', error);
