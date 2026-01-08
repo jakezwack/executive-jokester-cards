@@ -1,3 +1,133 @@
+'use client';
+
+import { useState, useRef, useCallback } from 'react';
+import { CardData } from '@/lib/types';
+import ControlPanel from '@/components/control-panel';
+import SharingCard from '@/components/sharing-card';
+import SnapModeView from '@/components/snap-mode-view';
+import { useToast } from '@/hooks/use-toast';
+import { generateSatiricalWit } from '@/ai/flows/generate-satirical-wit';
+import { saveCard } from '@/lib/actions';
+import * as htmlToImage from 'html-to-image';
+import { Target } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+
 export default function Home() {
-  return <></>;
+  const defaultImage = PlaceHolderImages.find(img => img.id === 'realtor-default')?.imageUrl || 'https://picsum.photos/seed/realtor/400/400';
+
+  const [cardData, setCardData] = useState<CardData>({
+    realtorName: 'Firstname Lastname',
+    realtorTitle: 'Executive Realtor',
+    realtorImageUrl: defaultImage,
+    theme: 'Tactical',
+    satiricalWit: 'I put the "real" in "real estate" and the "pro" in "procrastination".',
+  });
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [showSnapMode, setShowSnapMode] = useState(false);
+
+  const { toast } = useToast();
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleDataChange = (data: Partial<CardData>) => {
+    setCardData(prev => ({ ...prev, ...data }));
+  };
+
+  const handleGenerateWit = async () => {
+    setIsGenerating(true);
+    try {
+      const result = await generateSatiricalWit({
+        realtorName: cardData.realtorName,
+        realtorTitle: cardData.realtorTitle,
+        theme: cardData.theme,
+        realtorImageUrl: cardData.realtorImageUrl,
+      });
+      if (result.satiricalWit) {
+        setCardData(prev => ({ ...prev, satiricalWit: result.satiricalWit }));
+      } else {
+        throw new Error('Failed to generate wit. The result was empty.');
+      }
+    } catch (error) {
+      console.error('Error generating wit:', error);
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not generate satirical wit. Please try again.',
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleSaveCard = async () => {
+    setIsSaving(true);
+    const result = await saveCard(cardData);
+    if (result.success) {
+      toast({
+        title: 'Card Saved!',
+        description: 'Your masterpiece has been saved to the gallery.',
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Save Failed',
+        description: result.error || 'Could not save the card. Please check your configuration.',
+      });
+    }
+    setIsSaving(false);
+  };
+  
+  const handleExport = useCallback(() => {
+    if (cardRef.current === null) {
+      return;
+    }
+
+    htmlToImage.toJpeg(cardRef.current, { quality: 0.95, backgroundColor: '#020617' })
+      .then((dataUrl) => {
+        const link = document.createElement('a');
+        link.download = 'satirical-card.jpeg';
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.error(err);
+        toast({
+          variant: 'destructive',
+          title: 'Export Failed',
+          description: 'Could not export the card as an image.',
+        });
+      });
+  }, [cardRef, toast]);
+
+
+  return (
+    <main className="min-h-screen bg-background text-foreground font-body">
+      <div className="flex flex-col md:flex-row min-h-screen">
+        <ControlPanel
+          cardData={cardData}
+          onDataChange={handleDataChange}
+          onGenerateWit={handleGenerateWit}
+          onSaveCard={handleSaveCard}
+          onExport={handleExport}
+          isGenerating={isGenerating}
+          isSaving={isSaving}
+          showSnapMode={showSnapMode}
+          setShowSnapMode={setShowSnapMode}
+        />
+
+        <div className="flex-1 flex items-center justify-center p-4 md:p-8 bg-grid-pattern [background-size:2rem_2rem] relative">
+          <div className="absolute top-4 left-4 flex items-center gap-2 text-primary">
+            <Target className="w-8 h-8"/>
+            <h1 className="text-xl font-bold tracking-tighter">Satirical Sharing Card Generator</h1>
+          </div>
+          <SharingCard ref={cardRef} {...cardData} />
+        </div>
+      </div>
+      
+      <SnapModeView open={showSnapMode} onOpenChange={setShowSnapMode}>
+        <SharingCard {...cardData} />
+      </SnapModeView>
+      
+    </main>
+  );
 }

@@ -1,3 +1,10 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "realtor-default",
+      "description": "Default placeholder for realtor profile image",
+      "imageUrl": "https://images.unsplash.com/photo-1652471943570-f3590a4e52ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxoZWFkc2hvdCUyMHByb2Zlc3Npb25hbHxlbnwwfHx8fDE3Njc4OTQxNjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "headshot professional"
+    }
+  ]
 }
