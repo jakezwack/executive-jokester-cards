@@ -11,7 +11,7 @@
  * Key Security Decisions:
  * - User Isolation: A user can only access and manage data within their own `/users/{userId}` path.
  * - No User Enumeration: Listing documents in the top-level `/users` collection is explicitly forbidden to protect user privacy.
- * - Public Data is Read-Only: Collections like `satirical_wit_presets` and `buzzword_definitions` are readable by anyone
+ * - Public Data is Read-Only: Collections like `satire_assets` and `buzzword_definitions` are readable by anyone
  *   but are not writable by clients. This is the most secure posture, assuming an admin or backend process manages this content.
  * - Default Secure: Any path not explicitly matched is denied access. All write operations require authentication.
  *
@@ -20,7 +20,7 @@
  * to the parent user profile, leading to simpler and more performant rules.
  *
  * Structural Segregation: User-private data (profiles, sharing cards) is segregated into the `/users/{userId}` path,
- * while public data (`satirical_wit_presets`, `buzzword_definitions`) resides in its own top-level collections. This
+ * while public data (`satire_assets`, `buzzword_definitions`) resides in its own top-level collections. This
  * separation simplifies security logic, preventing accidental exposure of private data and allowing for safe, efficient
  * public list operations.
  */
@@ -116,12 +116,12 @@ service cloud.firestore {
 
     /**
      * @description Allows public read access to satirical wit presets. Writes are disabled.
-     * @path /satirical_wit_presets/{presetId}
+     * @path /satire_assets/{satireAssetId}
      * @allow (get, list) Any user, including unauthenticated ones, reading preset data.
      * @deny (create, update, delete) Any user attempting to modify the global presets.
      * @principle Secures global, read-only content. Assumes this data is managed by an admin via the console or a trusted backend.
      */
-    match /satirical_wit_presets/{presetId} {
+    match /satire_assets/{satireAssetId} {
       allow get: if true;
       allow list: if true;
       allow create: if false;

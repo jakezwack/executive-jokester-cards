@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { CardData } from '@/lib/types';
 import ControlPanel from '@/components/control-panel';
 import SharingCard from '@/components/sharing-card';
@@ -11,6 +11,9 @@ import { saveCard } from '@/lib/actions';
 import * as htmlToImage from 'html-to-image';
 import { Target } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { useAuth } from '@/firebase';
+import { signInAnonymously } from 'firebase/auth';
+import { useUser } from '@/firebase';
 
 export default function Home() {
   const defaultImage = PlaceHolderImages.find(img => img.id === 'realtor-default')?.imageUrl || 'https://picsum.photos/seed/realtor/400/400';
@@ -29,6 +32,22 @@ export default function Home() {
 
   const { toast } = useToast();
   const cardRef = useRef<HTMLDivElement>(null);
+  const auth = useAuth();
+  const { user, isUserLoading } = useUser();
+
+  useEffect(() => {
+    if (auth && !user && !isUserLoading) {
+      signInAnonymously(auth).catch((error) => {
+        console.error("Anonymous sign-in failed:", error);
+        toast({
+          variant: "destructive",
+          title: "Authentication Failed",
+          description: "Could not sign in anonymously. Some features may be unavailable.",
+        });
+      });
+    }
+  }, [auth, user, isUserLoading, toast]);
+
 
   const handleDataChange = (data: Partial<CardData>) => {
     setCardData(prev => ({ ...prev, ...data }));
@@ -62,12 +81,20 @@ export default function Home() {
   };
 
   const handleSaveCard = async () => {
+    if (!user) {
+      toast({
+        variant: 'destructive',
+        title: 'Not Logged In',
+        description: 'You must be signed in to save a card.',
+      });
+      return;
+    }
     setIsSaving(true);
     const result = await saveCard(cardData);
     if (result.success) {
       toast({
         title: 'Card Saved!',
-        description: 'Your masterpiece has been saved to the gallery.',
+        description: 'Your masterpiece has been saved to your collection.',
       });
     } else {
       toast({

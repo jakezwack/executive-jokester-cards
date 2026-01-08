@@ -1,10 +1,11 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster"
 import './globals.css';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
-  title: 'Satirical Sharing Card Generator',
-  description: 'Generate satirical sharing cards for realtors.',
+  title: 'The Executive Jokester: Satirical Sharing Cards for Professionals',
+  description: 'The Executive Jokester: Professional satire for the 2026 agentic workplace. No politics, just corporate reality.',
 };
 
 export default function RootLayout({
@@ -20,7 +21,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
-        {children}
+        <FirebaseClientProvider>
+          {children}
+        </FirebaseClientProvider>
         <Toaster />
       </body>
     </html>
