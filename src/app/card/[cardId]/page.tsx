@@ -45,8 +45,10 @@ export default function CardPage() {
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-        <Loader2 className="w-16 h-16 animate-spin text-primary" />
-        <p className="mt-4 text-lg">Loading Card...</p>
+        <div className="flex flex-col items-center justify-center gap-4">
+            <Loader2 className="w-16 h-16 animate-spin text-primary" />
+            <p className="text-lg text-muted-foreground">Summoning Holographic Soul...</p>
+        </div>
       </div>
     );
   }
@@ -54,11 +56,13 @@ export default function CardPage() {
   if (error || !cardData) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
-        <h1 className="text-3xl font-bold text-destructive">Card Not Found</h1>
-        <p className="mt-2 text-muted-foreground">This sharing card may have been deleted or the link is incorrect.</p>
-        <Button asChild variant="outline" className="mt-6">
-          <Link href="/"><ArrowLeft /> Back to Generator</Link>
-        </Button>
+        <div className="text-center">
+            <h1 className="text-3xl font-bold text-destructive">Card Not Found</h1>
+            <p className="mt-2 text-muted-foreground">This sharing card may have been deleted or the link is incorrect.</p>
+            <Button asChild variant="outline" className="mt-6">
+              <Link href="/"><ArrowLeft className="mr-2"/> Back to Generator</Link>
+            </Button>
+        </div>
       </div>
     );
   }
@@ -67,7 +71,7 @@ export default function CardPage() {
     <main className="min-h-screen bg-background text-foreground font-body flex flex-col items-center justify-center p-4">
       <div className="absolute top-4 left-4">
          <Button asChild variant="outline">
-          <Link href="/"><ArrowLeft /> Back to Generator</Link>
+          <Link href="/"><ArrowLeft className="mr-2"/> Back to Generator</Link>
         </Button>
       </div>
       <div className="flex flex-col items-center gap-8">
