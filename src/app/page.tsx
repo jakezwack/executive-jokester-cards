@@ -48,7 +48,7 @@ export default function Home() {
   
   const [cardData, setCardData] = useState<CardData>({
     name: 'Firstname Lastname',
-    persona: getDefaultPersona(),
+    persona: personas[0], // Start with a deterministic persona
     imageUrl: defaultImage,
     theme: 'Tactical',
     satiricalWit: 'I put the "pro" in "procrastination".',
@@ -68,6 +68,15 @@ export default function Home() {
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
 
+  // Set the initial random persona on the client side to avoid hydration errors
+  useEffect(() => {
+    setCardData(prev => ({
+      ...prev,
+      persona: getDefaultPersona()
+    }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (auth && !user && !isUserLoading) {
       signInAnonymously(auth).catch((error) => {
@@ -83,10 +92,13 @@ export default function Home() {
 
   // When the counterPersonaId changes, update the persona in the cardData
   useEffect(() => {
-    setCardData(prev => ({
-      ...prev,
-      persona: getDefaultPersona()
-    }));
+    // Only run this if counterPersonaId is present to avoid overriding the initial random persona
+    if(counterPersonaId) {
+      setCardData(prev => ({
+        ...prev,
+        persona: getDefaultPersona()
+      }));
+    }
   }, [counterPersonaId, getDefaultPersona]);
 
 
