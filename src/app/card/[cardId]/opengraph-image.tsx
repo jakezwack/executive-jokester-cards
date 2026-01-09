@@ -49,19 +49,19 @@ export default async function Image({ params }: { params: { cardId: string } }) 
   const cardProps = { ...cardData, persona };
 
   const spaceGroteskRegular = fetch(
-    new URL('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQtsPcpFJQ1BqA1gBt2s_3mmx924.woff2', import.meta.url)
+    'https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQtsPcpFJQ1BqA1gBt2s_3mmx924.woff2'
   ).then((res) => res.arrayBuffer());
 
   const robotoCondensedRegular = fetch(
-    new URL('https://fonts.gstatic.com/s/robotocondensed/v27/ieVl2ZhZI2eCN5imMyqadqzA_J underwriters.woff2', import.meta.url)
+    'https://fonts.gstatic.com/s/robotocondensed/v27/ieVl2ZhZI2eCN5imMyqadqzA_J underwriters.woff2'
   ).then((res) => res.arrayBuffer());
   
   const blackOpsOneRegular = fetch(
-    new URL('https://fonts.gstatic.com/s/blackopsone/v20/qWcsB6-ypo7xBdr6qr86xLoa-9f94g.woff2', import.meta.url)
+    'https://fonts.gstatic.com/s/blackopsone/v20/qWcsB6-ypo7xBdr6qr86xLoa-9f94g.woff2'
   ).then((res) => res.arrayBuffer());
 
   const orbitronRegular = fetch(
-    new URL('https://fonts.gstatic.com/s/orbitron/v32/yMJRMIlzdpvBhQQL_Qq7dy0.woff2', import.meta.url)
+    'https://fonts.gstatic.com/s/orbitron/v32/yMJRMIlzdpvBhQQL_Qq7dy0.woff2'
   ).then((res) => res.arrayBuffer());
 
 
