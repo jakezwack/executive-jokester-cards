@@ -64,6 +64,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const title = `${cardData.name} - ${cardData.personaName}`;
   const description = `"${cardData.satiricalWit}" | The Executive Jokester`;
+
+  // Construct the URL for the Open Graph image with search parameters
+  const imageUrl = new URL(`${cardUrl}/opengraph-image`);
+  imageUrl.searchParams.set('name', cardData.name);
+  imageUrl.searchParams.set('personaId', cardData.personaId);
+  imageUrl.searchParams.set('satiricalWit', cardData.satiricalWit);
+  imageUrl.searchParams.set('imageUrl', cardData.imageUrl);
+  imageUrl.searchParams.set('isEvolved', String(cardData.isEvolved));
+  if (cardData.customQuote) {
+    imageUrl.searchParams.set('customQuote', cardData.customQuote);
+  }
   
   return {
     title: title,
@@ -74,15 +85,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: description,
       url: cardUrl,
       siteName: 'The Executive Jokester',
+      images: [
+        {
+          url: imageUrl.toString(),
+          width: 400,
+          height: 500,
+          alt: title,
+        },
+      ],
       type: 'website',
-      // The images array is implicitly handled by opengraph-image.tsx
     },
     twitter: {
       card: 'summary_large_image',
       title: title,
       description: description,
       creator: '@execjokester',
-      // The images array is implicitly handled by opengraph-image.tsx
+      images: [imageUrl.toString()],
     },
   };
 }

@@ -1,8 +1,8 @@
 
-import { ImageResponse } from 'next/og';
-import { getCardData } from './page';
+import { ImageResponse } from 'next/server';
 import SharingCard from '@/components/sharing-card';
 import { personas } from '@/lib/personas';
+import type { Persona } from '@/lib/types';
 
 export const runtime = 'edge';
 
@@ -13,11 +13,19 @@ export const size = {
 };
 export const contentType = 'image/png';
 
-export default async function Image({ params }: { params: { cardId: string } }) {
-  const cardData = await getCardData(params.cardId);
+export default async function Image({ params, searchParams }: { params: { cardId: string }, searchParams: { [key: string]: string | string[] | undefined } }) {
+  
+  const name = searchParams.name as string || 'Not Found';
+  const personaId = searchParams.personaId as string;
+  const satiricalWit = searchParams.satiricalWit as string || 'The Executive Jokester';
+  const imageUrl = searchParams.imageUrl as string;
+  const isEvolved = searchParams.isEvolved === 'true';
+  const customQuote = searchParams.customQuote as string || '';
 
-  if (!cardData) {
-    // Return a default "not found" image
+
+  const persona = personas.find(p => p.id === personaId);
+
+  if (!persona) {
     return new ImageResponse(
       (
         <div
@@ -45,8 +53,15 @@ export default async function Image({ params }: { params: { cardId: string } }) 
     );
   }
 
-  const persona = personas.find(p => p.id === cardData.personaId) || personas[0];
-  const cardProps = { ...cardData, persona };
+  const cardProps = {
+    name,
+    persona,
+    imageUrl,
+    satiricalWit,
+    theme: 'Tactical', // Assuming a default or pass if needed
+    isEvolved,
+    customQuote,
+  };
 
   const spaceGroteskRegular = fetch(
     'https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQtsPcpFJQ1BqA1gBt2s_3mmx924.woff2'
@@ -77,6 +92,7 @@ export default async function Image({ params }: { params: { cardId: string } }) 
           justifyContent: 'center',
         }}
       >
+        {/* @ts-ignore */}
         <SharingCard {...cardProps} />
       </div>
     ),
