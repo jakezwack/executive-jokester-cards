@@ -71,6 +71,10 @@ export default async function Image({ params }: { params: { cardId: string } }) 
         style={{
           display: 'flex',
           fontFamily: '"Roboto Condensed"',
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <SharingCard {...cardProps} />

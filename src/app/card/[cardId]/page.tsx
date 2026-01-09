@@ -51,18 +51,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cardId = params.cardId;
   const cardData = await getCardData(cardId);
 
+  const siteUrl = 'https://theexecutivejokester.com';
+  const cardUrl = `${siteUrl}/card/${cardId}`;
+
   if (!cardData) {
     return {
       title: 'Card Not Found',
       description: 'This sharing card may have been deleted or the link is incorrect.',
+      metadataBase: new URL(siteUrl),
     };
   }
 
   const title = `${cardData.name} - ${cardData.personaName}`;
   const description = `"${cardData.satiricalWit}" | The Executive Jokester`;
-  const siteUrl = 'https://theexecutivejokester.com';
-  const cardUrl = `${siteUrl}/card/${cardId}`;
-
+  
   return {
     title: title,
     description: description,
@@ -73,12 +75,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: cardUrl,
       siteName: 'The Executive Jokester',
       type: 'website',
+      // The images array is implicitly handled by opengraph-image.tsx
     },
     twitter: {
       card: 'summary_large_image',
       title: title,
       description: description,
-      creator: '@execjokester', // Optional: Add your twitter handle
+      creator: '@execjokester',
+      // The images array is implicitly handled by opengraph-image.tsx
     },
   };
 }
