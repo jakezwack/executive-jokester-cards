@@ -1,5 +1,5 @@
 
-import { ImageResponse } from 'next/server';
+import { ImageResponse } from 'next/og';
 import SharingCard from '@/components/sharing-card';
 import { personas } from '@/lib/personas';
 import type { Persona } from '@/lib/types';
