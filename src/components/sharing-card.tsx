@@ -92,7 +92,7 @@ const SharingCard = forwardRef<HTMLDivElement, SharingCardProps>((
           <div className="absolute bottom-0 left-0 p-6 text-white">
             <h2 className="text-4xl font-bold leading-tight">{name}</h2>
             <p className="text-lg text-amber-300">{persona.name}</p>
-            <p className="mt-4 text-md italic max-w-xs">&ldquo;{satiricalWit}&rdquo;</p>
+            <div className="mt-4 text-md italic max-w-xs">&ldquo;{satiricalWit}&rdquo;</div>
           </div>
            <div className="absolute top-4 right-4 text-white font-bold text-lg tracking-widest">
             EXEC JOKESTER
@@ -240,5 +240,3 @@ const SharingCard = forwardRef<HTMLDivElement, SharingCardProps>((
 
 SharingCard.displayName = 'SharingCard';
 export default SharingCard;
-
-    
